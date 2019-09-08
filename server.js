@@ -21,7 +21,7 @@ app.use("/captions", require("./routes/captions"));
 // server listener
 if (!module.parent) {
   const PORT = process.env.PORT || 3000;
-  server.listen(PORT, () =>
+  app.listen(PORT, () =>
     console.log(
       `server running in ${process.env.NODE_ENV} mode on port ${PORT}`
     )
