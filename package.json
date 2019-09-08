@@ -1,0 +1,40 @@
+{
+  "name": "live-torrent-backend",
+  "version": "1.0.0",
+  "description": "the backend server for the live-torrent project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "backend",
+    "express",
+    "live-torrent",
+    "torrent",
+    "webtorrent",
+    "serve",
+    "stream",
+    "download",
+    "client"
+  ],
+  "author": "Davenchy",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "mime": "^2.4.4",
+    "morgan": "^1.9.1",
+    "opensubtitles-api": "^5.0.1",
+    "pump": "^3.0.0",
+    "range-parser": "^1.2.1",
+    "torrent-search-api": "^2.0.9",
+    "webtorrent": "^0.107.12",
+    "yazl": "^2.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
+}
