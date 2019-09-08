@@ -1,8 +1,10 @@
-# live-torrent
+# live-torrent-backend
+
+This project is the backend server for [The Live Torrent](https://github.com/Davenchy/live-torrent) project.
 
 Explore, serve and share torrent files online.
 
-Project is based on **webtorrent**.
+This project is based on **webtorrent**.
 
 ## How to use
 
@@ -10,10 +12,10 @@ Project is based on **webtorrent**.
 
 > Note: you can use .env file to setup vars
 
-| Var  | Default | Desc                         |
-| ---- | ------- | ---------------------------- |
-| PORT | 3000    | server listening port        |
-| OSUA |         | Opensubtitles.org User Agent |
+| Var  | Default            | Desc                         |
+| ---- | ------------------ | ---------------------------- |
+| PORT | 3000               | server listening port        |
+| OSUA | TemporaryUserAgent | Opensubtitles.org User Agent |
 
 ### For Users
 
