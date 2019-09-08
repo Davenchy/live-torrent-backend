@@ -7,6 +7,10 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Davenchy/live-torrent-backend.git"
+  },
   "keywords": [
     "backend",
     "express",
