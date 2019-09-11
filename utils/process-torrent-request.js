@@ -1,5 +1,6 @@
 const app = require("express")();
 const torrents = require("../lib/torrents");
+let useSelectors = true;
 
 // init
 app.get("/", getTorrentId, loadTorrent, parseSelectors);
@@ -42,6 +43,7 @@ function loadTorrent(req, res, next) {
 }
 
 function parseSelectors(req, res, next) {
+  if (!useSelectors) return next();
   const selectorQuery = req.params[0];
   const { fileIndex, filePath, fileType } = req.query;
   const torrentName = req.torrent.name;
@@ -96,4 +98,7 @@ function parseSelectors(req, res, next) {
   next();
 }
 
-module.exports = app;
+module.exports = (selectors = true) => {
+  useSelectors = !!selectors;
+  return app;
+};
