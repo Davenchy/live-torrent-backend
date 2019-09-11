@@ -98,7 +98,4 @@ function parseSelectors(req, res, next) {
   next();
 }
 
-module.exports = (selectors = true) => {
-  useSelectors = !!selectors;
-  return app;
-};
+module.exports = app;
