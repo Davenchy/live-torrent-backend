@@ -20,6 +20,9 @@ app.get("/", async (req, res) => {
   if (!query) return res.status(400).send("query is needed!");
 
   try {
+    /**
+     * @type {object[]}
+     */
     let results = [];
 
     if (!provider) {

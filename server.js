@@ -7,9 +7,9 @@ const morgan = require("morgan");
 // env vars
 require("dotenv").config();
 
-function main(disableMiddlewares = false) {
+function main(disableMiddleWares = false) {
   // middle wares
-  if (!disableMiddlewares) {
+  if (!disableMiddleWares) {
     app.use(cors());
     app.use(morgan("dev"));
     app.use(bodyParser.json());
@@ -23,6 +23,7 @@ function main(disableMiddlewares = false) {
 }
 
 // server listener
+// @ts-ignore
 if (!module.parent) {
   main();
   const PORT = process.env.PORT || 3000;
@@ -31,8 +32,13 @@ if (!module.parent) {
     console.log(`server is running in ${env} mode on port ${PORT}`)
   );
 } else {
-  module.exports = (disableMiddlewares = false) => {
-    main(!!disableMiddlewares);
+  /**
+   * live torrent backend express.js middle ware
+   * @param {boolean} [disableMiddleWares=false] - disable the default middle wares used by the backend
+   * @return {object} express.js app object
+   */
+  module.exports = (disableMiddleWares = false) => {
+    main(!!disableMiddleWares);
     return app;
   };
 }
