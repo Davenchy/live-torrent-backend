@@ -1,6 +1,6 @@
 {
   "name": "live-torrent-backend",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "the backend server for the live-torrent project",
   "main": "server.js",
   "scripts": {
