@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server.js",
-    "dev": "NODE_ENV=development nodemon server.js"
+    "dev": "NODE_ENV=development nodemon server.js",
+    "test": "mocha --exit"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   "author": "Davenchy",
   "license": "MIT",
   "dependencies": {
+    "@types/mocha": "^5.2.7",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
@@ -39,6 +41,13 @@
     "yazl": "^2.5.1"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2"
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "mocha": "^6.2.0",
+    "nodemon": "^1.19.2",
+    "prettier": "^1.18.2"
   }
 }

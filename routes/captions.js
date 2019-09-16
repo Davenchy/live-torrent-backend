@@ -2,24 +2,31 @@ const app = require("express")();
 const OS = require("opensubtitles-api");
 
 const OpenSubtitles = new OS(process.env.OSUA || "TemporaryUserAgent");
-let isLoggedIn = false;
-
-OpenSubtitles.api
-  .LogIn()
-  .then(() => {
-    isLoggedIn = true;
-    console.log("OpenSubtitles.org: LoggedIn");
-  })
-  .catch(err => {
-    console.error("OpenSubtitles.org: Login Failed!!");
-    console.error(err);
-  });
+let isLoggedIn = null;
 
 // is logged in middleware
-app.use((req, res, next) => {
-  if (!isLoggedIn) res.status(500).send("OpenSubtitles.org Login Failed!");
-  else next();
-});
+app.use(
+  (req, res, next) => {
+    if (isLoggedIn === null)
+      OpenSubtitles.api
+        .LogIn()
+        .then(() => {
+          isLoggedIn = true;
+          console.log("OpenSubtitles.org: LoggedIn");
+          next();
+        })
+        .catch(err => {
+          console.error("OpenSubtitles.org: Login Failed!!");
+          console.error(err);
+          next();
+        });
+    else next();
+  },
+  (req, res, next) => {
+    if (!isLoggedIn) res.status(500).send("OpenSubtitles.org Login Failed!");
+    else next();
+  }
+);
 
 app.get("/search", (req, res) => {
   const sublanguageid = req.query.lang || "all";

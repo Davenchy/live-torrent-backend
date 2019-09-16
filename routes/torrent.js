@@ -65,10 +65,6 @@ function playList(req, res) {
     m3uStr += `#EXTINF:-1,${file.name}\n${host}/api/torrent/serve/${torrent.infoHash}${file.cleanPath}\n`;
   });
 
-  res.setHeader(
-    "Content-Disposition",
-    `inline; filename*=UTF-8''${torrent.name}.m3u`
-  );
   res.attachment(torrent.name + ".m3u");
   res.setHeader("Content-Length", m3uStr.length);
   res.setHeader("Content-Type", "application/mpegurl");
@@ -80,11 +76,6 @@ function playList(req, res) {
 function torrentFile(req, res) {
   const { torrent } = req;
   const file = torrent.torrentFile;
-
-  res.setHeader(
-    "Content-Disposition",
-    `inline; filename*=UTF-8''${torrent.name}.torrent`
-  );
   res.attachment(torrent.name + ".torrent");
   res.setHeader("Content-Length", file.length);
   res.setHeader("Content-Type", "application/x-bittorrent");
