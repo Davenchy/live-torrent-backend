@@ -36,7 +36,7 @@
     "opensubtitles-api": "^5.0.1",
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
-    "torrent-search-api": "^2.0.9",
+    "torrent-search-api": "^2.0.10",
     "webtorrent": "^0.107.12"
   },
   "devDependencies": {
