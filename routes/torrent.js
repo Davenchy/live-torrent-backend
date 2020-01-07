@@ -1,15 +1,18 @@
 const app = require("express")();
 const torrents = require("../lib/torrents");
-const ZipFile = require("yazl").ZipFile;
-const pump = require("pump");
 const processReq = require("../utils/process-torrent-request");
 
 // routes //
 app.use("/info", processReq, info);
 app.use("/serve", processReq, serve);
-app.use("/download", processReq, download);
 app.use("/playlist", processReq, playList);
 app.use("/torrentfile", processReq, torrentFile);
+
+// routes aliases //
+app.use("/i", processReq, info);
+app.use("/s", processReq, serve);
+app.use("/pl", processReq, playList);
+app.use("/tf", processReq, torrentFile);
 
 // handlers //
 function info(req, res) {
@@ -25,31 +28,6 @@ function serve(req, res) {
   if (!custom) res.status(400).send("please select file");
   else if (!selectedFiles.length) res.status(404).send("file not found");
   else torrents.serveFile(selectedFiles[0], req, res);
-}
-
-function download(req, res) {
-  const { torrent, selectedFiles, custom } = req;
-  // add all selected files with full path
-  const fullPath = req.query.fullPath !== false;
-
-  // add headers
-  res.attachment(`${torrent.name}.zip`);
-  // res.setHeader("Content-Length", torrent.length);
-  req.connection.setTimeout(3600000);
-
-  // create zip file, add files and send the zip file
-
-  const zipFile = new ZipFile();
-  pump(zipFile.outputStream, res);
-
-  (custom ? selectedFiles : torrent.files).forEach(file => {
-    zipFile.addReadStream(
-      file.createReadStream(),
-      fullPath ? file.path : file.name
-    );
-  });
-
-  zipFile.end();
 }
 
 function playList(req, res) {

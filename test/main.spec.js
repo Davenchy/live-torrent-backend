@@ -127,16 +127,6 @@ const handlePlaylistTest = done => (err, res) => {
   done();
 };
 
-const handleDownloadTest = done => (err, res) => {
-  successResponse(err, res);
-  expect(res.type).eqls("application/zip");
-  expect(res).header(
-    "Content-Disposition",
-    "attachment; filename=\"Sintel.zip\""
-  );
-  done();
-};
-
 const handleTorrentFileTest = done => (err, res) => {
   successResponse(err, res);
   expect(res.type).eqls("application/x-bittorrent");
@@ -224,35 +214,6 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
 
   it("get a playlist using info hash", function(done) {
     agent.get(`/torrent/playlist/${infoHash}`).end(handlePlaylistTest(done));
-  });
-
-  // download method
-
-  it("download using torrent id", function(done) {
-    agent
-      .get("/torrent/download")
-      .query({
-        torrentId
-      })
-      .end(handleDownloadTest(done));
-  });
-
-  it("download using info hash", function(done) {
-    agent.get(`/torrent/download/${infoHash}`).end(handleDownloadTest(done));
-  });
-
-  it("download caption using torrent id", function(done) {
-    agent
-      .get("/torrent/download")
-      .query({
-        torrentId,
-        fileIndex: 0
-      })
-      .end(handleDownloadTest(done));
-  });
-
-  it("download caption using info hash", function(done) {
-    agent.get(`/torrent/download/${infoHash}/0`).end(handleDownloadTest(done));
   });
 
   // get torrent file [.torrent]

@@ -37,8 +37,7 @@
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
     "torrent-search-api": "^2.0.9",
-    "webtorrent": "^0.107.12",
-    "yazl": "^2.5.1"
+    "webtorrent": "^0.107.12"
   },
   "devDependencies": {
     "chai": "^4.2.0",
