@@ -17,6 +17,7 @@ function main(disableMiddleWares = false) {
   }
 
   // routes
+  app.use("/", (req, res) => res.send("Live-Torrent-Backend server is running"));
   app.use("/torrent", require("./routes/torrent"));
   app.use("/search", require("./routes/search"));
   app.use("/captions", require("./routes/captions"));
