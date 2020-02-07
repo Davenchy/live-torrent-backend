@@ -1,0 +1,15 @@
+{
+  "name": "Live Torrent Server",
+  "description": "Backend server for The Live Torrent project",
+  "repository": "https://github.com/Davenchy/live-torrent-backend",
+  "logo": "https://github.com/Davenchy/live-torrent/raw/master/public/img/logo.png",
+  "keywords": [
+    "backend",
+    "express",
+    "live-torrent",
+    "torrent",
+    "webtorrent",
+    "server",
+    "stream"
+  ]
+}
