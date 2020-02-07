@@ -11,5 +11,12 @@
     "webtorrent",
     "server",
     "stream"
-  ]
+  ],
+  "env": {
+    "OSUA": {
+      "description": "OpenSubtitles User Agent [without it no subtitles support]",
+      "required": false,
+      "value": "TemporaryUserAgent"
+    }
+  }
 }
