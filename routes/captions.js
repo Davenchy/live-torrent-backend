@@ -28,13 +28,14 @@ app.use(
   }
 );
 
-app.get("/search", (req, res) => {
-  const sublanguageid = req.query.lang || "all";
-  const query = req.query.query;
-  const limit = req.query.limit || "best";
-  const season = req.query.season;
-  const episode = req.query.episode;
-  const imdbid = req.query.imdbid;
+app.get("/", (req, res) => {
+  const rq = req.query,
+    sublanguageid = rq.lang || rq.ln || "all",
+    query = rq.query || rq.q,
+    limit = rq.limit || rq.l || "best",
+    season = rq.season || rq.s,
+    episode = rq.episode || rq.e,
+    imdbid = rq.imdbid || rq.im;
 
   OpenSubtitles.search({
     sublanguageid,

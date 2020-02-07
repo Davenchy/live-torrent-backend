@@ -14,7 +14,7 @@ describe("testing captions", function() {
   it("search for shazam arabic caption", function(done) {
     this.timeout(10000);
     agent
-      .get("/captions/search")
+      .get("/captions")
       .query({
         query: "shazam",
         limit: "best",
@@ -35,7 +35,7 @@ describe("testing captions", function() {
   it("search for spider man far from home arabic caption", function(done) {
     this.timeout(10000);
     agent
-      .get("/captions/search")
+      .get("/captions")
       .query({
         query: "spider man far from home",
         limit: "best",
@@ -70,7 +70,7 @@ describe("testing torrent search engine", function() {
     agent
       .get("/search")
       .query({
-        query: "Spider-Man: Far from Home (2019) [WEBRip] [1080p] [YTS] [YIFY]",
+        query: "spiderman",
         provider: "1337x",
         category: "Movies",
         limit: 1
@@ -111,7 +111,7 @@ const handleServeTest = done => (err, res) => {
   expect(res).header("Content-Length", "1652");
   expect(res).header(
     "Content-Disposition",
-    "attachment; filename=\"Sintel.de.srt\""
+    'attachment; filename="Sintel.de.srt"'
   );
   done();
 };
@@ -122,7 +122,7 @@ const handlePlaylistTest = done => (err, res) => {
   expect(res).header("Content-Length", "123");
   expect(res).header(
     "Content-Disposition",
-    "attachment; filename=\"Sintel.m3u\""
+    'attachment; filename="Sintel.m3u"'
   );
   done();
 };
@@ -132,7 +132,7 @@ const handleTorrentFileTest = done => (err, res) => {
   expect(res.type).eqls("application/x-bittorrent");
   expect(res).header(
     "Content-Disposition",
-    "attachment; filename=\"Sintel.torrent\""
+    'attachment; filename="Sintel.torrent"'
   );
   done();
 };

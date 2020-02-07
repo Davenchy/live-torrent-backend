@@ -15,7 +15,11 @@ app.get("/providers", (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-  const { category, provider, query, limit } = req.query;
+  const rq = req.query,
+    query = rq.query || rq.q,
+    category = rq.category || rq.c,
+    limit = rq.limit || rq.l,
+    provider = rq.provider || rq.p;
 
   if (!query) return res.status(400).send("query is needed!");
 
@@ -23,22 +27,12 @@ app.get("/", async (req, res) => {
     /**
      * @type {object[]}
      */
-    let results = [];
-
-    if (!provider) {
-      results = await tsapi.search(
-        query || "",
-        category || "All",
-        limit || 100
-      );
-    } else {
-      results = await tsapi.search(
-        [provider],
-        query || "",
-        category || "All",
-        limit || 100
-      );
-    }
+    let results = await tsapi.search.apply(tsapi, [
+      ...(() => (provider ? [[provider]] : []))(),
+      query || "",
+      category || "All",
+      limit || 10
+    ]);
 
     for (let i in results) {
       const magnet = await tsapi.getMagnet(results[i]);
