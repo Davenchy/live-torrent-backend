@@ -21,31 +21,43 @@
     "server",
     "stream"
   ],
+  "bin": {
+    "live-torrent-server": "bin/live-torrent-server.js",
+    "live-torrent-backend": "bin/live-torrent-server.js",
+    "live-torrent": "bin/live-torrent-server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Davenchy/live-torrent-backend/issues"
+  },
   "author": "Davenchy",
   "license": "MIT",
   "dependencies": {
     "@types/mocha": "^5.2.7",
     "body-parser": "^1.19.0",
+    "book": "^1.3.3",
+    "chalk": "^3.0.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
     "mime": "^2.4.4",
     "morgan": "^1.9.1",
-    "opensubtitles-api": "^5.0.1",
+    "opensubtitles-api": "^5.1.0",
+    "ora": "^4.0.3",
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
-    "torrent-search-api": "^2.0.9",
-    "webtorrent": "^0.107.12"
+    "torrent-search-api": "^2.0.10",
+    "webtorrent": "^0.107.17",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "eslint": "^6.4.0",
-    "eslint-config-prettier": "^6.3.0",
-    "eslint-plugin-prettier": "^3.1.0",
-    "mocha": "^6.2.0",
-    "nodemon": "^1.19.2",
-    "prettier": "^1.18.2"
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "mocha": "^6.2.2",
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1"
   }
 }
