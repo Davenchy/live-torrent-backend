@@ -18,5 +18,7 @@
       "required": false,
       "value": "TemporaryUserAgent"
     }
-  }
+  },
+  "image": "davenchy/live-torrent-backend",
+  "success_url": "/ping"
 }

@@ -23,6 +23,7 @@ function main(disableMiddleWares = false) {
   app.get("/", (req, res) =>
     res.send("Live-Torrent-Backend server is running")
   );
+  app.get("/ping", (req, res) => res.send());
 }
 
 // server listener
