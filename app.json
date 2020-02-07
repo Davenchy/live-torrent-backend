@@ -20,5 +20,5 @@
     }
   },
   "image": "davenchy/live-torrent-backend",
-  "success_url": "/ping"
+  "success_url": "/"
 }
