@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:12
 
 LABEL maintainer "Davenchy <firon1222@gmail.com>"
 LABEL description "Build Live-Torrent-Backend server image"
