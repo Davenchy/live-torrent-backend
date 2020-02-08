@@ -5,6 +5,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 const chalk = require("chalk");
+const cluster = require("cluster");
+const os = require("os");
 
 // env vars
 require("dotenv").config();
@@ -28,14 +30,20 @@ function main(disableMiddleWares = false, logs = true) {
 // server listener
 // @ts-ignore
 if (!module.parent) {
-  main();
-  const PORT = process.env.PORT || 3000;
-  const env = process.env.NODE_ENV || "development";
-  app.listen(PORT, () =>
-    console.log(
-      chalk`server is running in {blue ${env}} mode on port {green ${PORT}}`
-    )
-  );
+  if (cluster.isMaster) {
+    const cpus = os.cpus().length;
+    for (let i = 0; i < cpus; i++) cluster.fork();
+    cluster.on("exit", () => cluster.fork());
+  } else {
+    main();
+    const PORT = process.env.PORT || 3000;
+    const env = process.env.NODE_ENV || "development";
+    app.listen(PORT, () =>
+      console.log(
+        chalk`server is running on process {red ${process.pid}} in {blue ${env}} mode on port {green ${PORT}}`
+      )
+    );
+  }
 } else {
   /**
    * live torrent backend express.js middle ware
