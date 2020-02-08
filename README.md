@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/Davenchy/live-torrent-backend.svg?branch=master)](https://travis-ci.org/Davenchy/live-torrent-backend) [![npm version](https://badge.fury.io/js/live-torrent-backend.svg)](https://badge.fury.io/js/live-torrent-backend)
+[![Build Status](https://travis-ci.org/Davenchy/live-torrent-backend.svg?branch=master)](https://travis-ci.org/Davenchy/live-torrent-backend) ![npm](https://img.shields.io/npm/v/live-torrent-backend?color=red) [![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Flive-torrent-server.herokuapp.com)](https://live-torrent-herokuapp.com)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/fadi_davenchy?style=social)](https://twitter.com/fadi_davenchy?ref_src=twsrc%5Etfw)
 
 # live-torrent-backend
 
