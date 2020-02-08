@@ -1,5 +1,8 @@
 .DS_Store
 node_modules
+.cache
+views/public
+dist
 
 # local env files
 .env

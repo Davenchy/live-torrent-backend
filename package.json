@@ -6,7 +6,10 @@
   "scripts": {
     "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "serve": "npm run clean && parcel serve views/src/index.html -d views/public",
+    "build": "npm run clean && parcel build views/src/index.html -d views/public",
+    "clean": "rimraf views/public"
   },
   "repository": {
     "type": "git",
@@ -46,11 +49,15 @@
     "ora": "^4.0.3",
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
+    "tailwindcss": "^1.2.0",
     "torrent-search-api": "^2.0.10",
+    "vue": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4",
     "webtorrent": "^0.107.17",
     "yargs": "^15.1.0"
   },
   "devDependencies": {
+    "@vue/component-compiler-utils": "^3.1.1",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "eslint": "^6.8.0",
@@ -58,6 +65,9 @@
     "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^6.2.2",
     "nodemon": "^1.19.4",
-    "prettier": "^1.19.1"
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.1",
+    "vue-template-compiler": "^2.6.11"
   }
 }

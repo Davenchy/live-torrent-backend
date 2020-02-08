@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require("path");
+const chalk = require("chalk");
 
 // env vars
 require("dotenv").config();
@@ -20,9 +22,7 @@ function main(disableMiddleWares = false, logs = true) {
   app.use("/torrent", require("./routes/torrent"));
   app.use("/search", require("./routes/search"));
   app.use("/captions", require("./routes/captions"));
-  app.get("/", (req, res) =>
-    res.send("Live-Torrent-Backend server is running")
-  );
+  app.use("/", express.static(path.resolve("views", "public")));
 }
 
 // server listener
@@ -32,7 +32,9 @@ if (!module.parent) {
   const PORT = process.env.PORT || 3000;
   const env = process.env.NODE_ENV || "development";
   app.listen(PORT, () =>
-    console.log(`server is running in ${env} mode on port ${PORT}`)
+    console.log(
+      chalk`server is running in {blue ${env}} mode on port {green ${PORT}}`
+    )
   );
 } else {
   /**
