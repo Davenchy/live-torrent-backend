@@ -5,11 +5,10 @@ LABEL description "Build Live-Torrent-Backend server image"
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
 ENV PORT 8080
 ENV OSUA TemporaryUserAgent
 
+COPY package*.json ./
 RUN npm install
 
 COPY . ./
