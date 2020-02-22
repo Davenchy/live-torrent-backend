@@ -15,4 +15,5 @@ COPY . ./
 RUN npm run build
 
 EXPOSE 8080
-CMD ["npm", "start"]
+ENTRYPOINT [ "./bin/live-torrent-server.js" ]
+# CMD ["node", "./bin/live-torrent-server.js --port 8080 --full-core-clusters"]
