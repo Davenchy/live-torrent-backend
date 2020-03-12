@@ -24,7 +24,7 @@ function main(disableMiddleWares = false, logs = true) {
   app.use("/torrent", require("./routes/torrent"));
   app.use("/search", require("./routes/search"));
   app.use("/captions", require("./routes/captions"));
-  app.use("/", express.static(path.resolve("views", "public")));
+  app.use("/", express.static(path.resolve("docs", ".vuepress", "dist")));
 }
 
 // server listener
