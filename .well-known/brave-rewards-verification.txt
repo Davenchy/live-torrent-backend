@@ -1,0 +1,4 @@
+This is a Brave Rewards publisher verification file.
+
+Domain: live-torrent-server.herokuapp.com
+Token: 7a34f0d02dbd2dd6ceb0e2d155dcce97f56a704f525f6de883d899657846d4b2
