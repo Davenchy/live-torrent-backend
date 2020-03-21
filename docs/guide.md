@@ -41,9 +41,21 @@ Docker repo: `davenchy/live-torrent-backend`
 
 Container's exported port `3000`
 
+- To Build
+
+`docker build -t <image name> .`
+
+Don't forget to replace `davenchy/live-torrent-backend` by your **image name** in the next examples.
+
 - To Run
 
-`docker run --name live-torrent-backend -p 3000:3000 -e "OSUA=<opensubtitles user agent>" davenchy/live-torrent-backend`
+`docker run --name live-torrent-backend -p 80:8080 -e "OSUA=<opensubtitles user agent>" davenchy/live-torrent-backend`
+
+- To run with SSL protocol support
+
+lets say that `/host/path/to/sslcert` is the path to your certification files
+
+`docker run --name live-torrent-backend -p 443:443 -p 80:8080 -e "OSUA=<opensubtitles user agent>" -v /host/path/to/sslcert:/usr/src/app/sslcert davenchy/live-torrent-backend`
 
 ## SSL Protocol
 
