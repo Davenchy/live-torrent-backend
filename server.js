@@ -37,20 +37,13 @@ function main(disableMiddleWares = false, logs = true) {
 if (!module.parent) {
   if (cluster.isMaster) {
     const cpus = os.cpus().length;
-    const PORT = process.env.PORT || 3000;
-    const SSL_PORT = process.env.SSL_PORT || 443;
-    const env = process.env.NODE_ENV || "development";
+    const { ENV, PORT, SSL_PORT } = servers;
 
     for (let i = 0; i < cpus; i++) cluster.fork();
-    cluster.on("exit", () =>
-      cluster.fork({
-        PORT,
-        SSL_PORT
-      })
-    );
+    cluster.on("exit", () => cluster.fork());
 
     console.log(
-      chalk`Main process is running on process {red ${process.pid}} in {blue ${env}} mode`
+      chalk`Main process is running on process {red ${process.pid}} in {blue ${ENV}} mode`
     );
 
     console.log(chalk`HTTP Server is running on port {green ${PORT}}`);
@@ -60,8 +53,7 @@ if (!module.parent) {
     console.log("");
   } else {
     main();
-    const PORT = process.env.PORT;
-    const SSL_PORT = process.env.SSL_PORT;
+    const { PORT, SSL_PORT } = servers;
 
     servers.httpServer.listen(PORT, () =>
       console.log(

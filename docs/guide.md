@@ -31,7 +31,7 @@ for more information about the OpenSubtitles.org api user agent from [here](http
 
 - how to run
 
-`live-torrent [--port 8080] [--clusters 1] [--full-core-clusters false]`
+`live-torrent [--port 8080] [--ssl-port 443] [--clusters 1] [--full-core-clusters false] [--key] [--cert]`
 
 > Note: to terminate clusters kill the main process
 

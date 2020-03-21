@@ -3,10 +3,11 @@
 const yargs = require("yargs");
 const chalk = require("chalk");
 const signale = require("signale");
+const { existsSync: exists } = require("fs");
 const updateNotifier = require("update-notifier");
 
 const cluster = require("cluster");
-const getServer = require("../server");
+const servers = require("../server")();
 // @ts-ignore
 const pkg = require("../package.json");
 const cpus = require("os").cpus().length;
@@ -22,6 +23,16 @@ if (cluster.isMaster) {
       describe: "internal server port",
       default: 8080
     })
+    .option("ssl-port", {
+      describe: "using ssl protocol",
+      default: 443
+    })
+    .option("key", {
+      describe: "ssl private key file path"
+    })
+    .option("cert", {
+      describe: "ssl certificate file path"
+    })
     .option("clusters", {
       describe: "run the server in number of clusters",
       default: 1
@@ -33,9 +44,12 @@ if (cluster.isMaster) {
       describe: "print the number of cpus"
     })
     .number("port")
+    .number("ssl-port")
     .number("clusters")
     .boolean("full-core-clusters")
     .boolean("cpus")
+    .string("key")
+    .string("cert")
     .help("help", "Show this help message and exit")
     .version(pkg.version);
 
@@ -66,8 +80,17 @@ function runMasterProcess(argv) {
   signale.info(chalk`Master Process: {green ${process.pid}}`);
   signale.info(chalk`Server Port: {green ${argv.port}}`);
 
-  if (clusters > 0)
-    for (let i = 0; i < clusters; i++) cluster.fork({ PORT: argv.port });
+  if (servers.isSSLSupported || (exists(argv.key) && exists(argv.cert)))
+    signale.info(chalk`Server SSL Port: {green ${argv.sslPort}}`);
+
+  const envs = {
+    PORT: argv.port || servers.PORT,
+    SSL_PORT: argv.sslPort || servers.SSL_PORT,
+    SERVER_KEY: argv.key || servers.SERVER_KEY,
+    SERVER_CERT: argv.cert || servers.SERVER_CERT
+  };
+
+  if (clusters > 0) for (let i = 0; i < clusters; i++) cluster.fork(envs);
 
   // restart cluster if crashed
   cluster.on("exit", (worker, code) => {
@@ -76,7 +99,7 @@ function runMasterProcess(argv) {
         chalk`worker {green ${worker.id}} on process {blue ${worker.process.pid}} {red crashed}.`
       );
       signale.await("Starting a new worker...");
-      cluster.fork({ PORT: argv.port });
+      cluster.fork(envs);
     } else {
       signale.warn(
         chalk`Worker {green ${worker.id}} on process {blue ${worker.process.pid}} is {red offline}`
@@ -99,15 +122,26 @@ function runMasterProcess(argv) {
 }
 
 function runWorkerProcess() {
-  const PORT = process.env.PORT;
-  const server = getServer().listen(PORT, () => {
+  const { httpServer, httpsServer, PORT, SSL_PORT, isSSLSupported } = servers;
+
+  const server = httpServer.listen(PORT, () =>
     signale.success(
-      chalk`Worker {green ${cluster.worker.id}} on process {blue ${process.pid}} is {green online}`
+      chalk`Worker {green ${cluster.worker.id}} on process {blue ${process.pid}} with {yellow HTTP} support is {green online}`
+    )
+  );
+
+  let sslServer;
+
+  if (isSSLSupported)
+    sslServer = httpsServer.listen(SSL_PORT, () =>
+      signale.success(
+        chalk`Worker {green ${cluster.worker.id}} on process {blue ${process.pid}} with {yellow HTTPS} support is {green online}`
+      )
     );
-  });
 
   const kill = () => {
     server.close();
+    if (isSSLSupported) sslServer.close();
     process.exit(0);
   };
 

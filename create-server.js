@@ -46,5 +46,8 @@ module.exports = {
   httpsServer,
   isSSLSupported,
   SSLFiles,
-  SSLENV
+  SSLENV,
+  PORT: process.env.PORT || 3000,
+  SSL_PORT: process.env.SSL_PORT || 443,
+  ENV: process.env.NODE_ENV || "development"
 };
