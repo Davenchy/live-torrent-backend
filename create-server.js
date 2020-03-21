@@ -14,14 +14,26 @@ const { SERVER_KEY, SERVER_CERT } = process.env;
 
 const SSLFiles = exists(sslCertPath) && exists(keyPath) && exists(certPath);
 const SSLENV = SERVER_KEY && SERVER_CERT;
-const isSSLSupported = SSLFiles || SSLENV;
+const SSLENVFiles = exists(SERVER_KEY) && exists(SERVER_CERT);
+const isSSLSupported = SSLFiles || SSLENV || SSLENVFiles;
 
 let SSLCredentials = undefined;
 if (isSSLSupported)
-  SSLCredentials = {
-    key: SSLFiles ? read(keyPath) : SERVER_KEY,
-    cert: SSLFiles ? read(certPath) : SERVER_CERT
-  };
+  if (SSLFiles)
+    SSLCredentials = {
+      key: read(keyPath),
+      cert: read(certPath)
+    };
+  else if (SSLENVFiles)
+    SSLCredentials = {
+      key: read(SERVER_KEY),
+      cert: read(SERVER_CERT)
+    };
+  else if (SSLENV)
+    SSLCredentials = {
+      key: SERVER_KEY,
+      cert: SERVER_CERT
+    };
 
 const httpServer = http.createServer(app);
 const httpsServer = isSSLSupported

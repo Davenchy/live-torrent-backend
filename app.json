@@ -17,6 +17,16 @@
       "description": "OpenSubtitles User Agent [without it no subtitles support]",
       "required": false,
       "value": "TemporaryUserAgent"
+    },
+    "SERVER_KEY": {
+      "description": "server ssl protocol private key file content",
+      "required": false,
+      "value": ""
+    },
+    "SERVER_CERT": {
+      "description": "server ssl protocol certificate file content",
+      "required": false,
+      "value": ""
     }
   },
   "image": "davenchy/live-torrent-backend",
