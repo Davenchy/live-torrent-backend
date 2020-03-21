@@ -25,6 +25,7 @@ function main(disableMiddleWares = false, logs = true) {
   app.use("/torrent", require("./routes/torrent"));
   app.use("/search", require("./routes/search"));
   app.use("/captions", require("./routes/captions"));
+  app.use("/yts", require("./routes/yts"));
   app.use(historyApi());
   app.use(express.static(path.resolve("docs", ".vuepress", "dist")));
 }

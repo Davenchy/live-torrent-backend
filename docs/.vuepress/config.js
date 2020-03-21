@@ -7,7 +7,7 @@ module.exports = {
       "/guide.md",
       {
         title: "APIs",
-        children: ["/torrent", "/captions.md", "/search.md"]
+        children: ["/torrent", "/captions.md", "/search.md", "/yts.md"]
       }
     ],
     nav: [
