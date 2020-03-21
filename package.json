@@ -7,9 +7,10 @@
     "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
     "test": "mocha --exit",
-    "serve": "npm run clean && parcel serve views/src/index.html -d views/public",
-    "build": "npm run clean && parcel build views/src/index.html -d views/public",
-    "clean": "rimraf views/public"
+    "serve": "npm run docs:dev",
+    "build": "npm run docs:build",
+    "docs:build": "vuepress build docs",
+    "docs:dev": "vuepress dev docs"
   },
   "repository": {
     "type": "git",
@@ -36,8 +37,10 @@
   "license": "MIT",
   "dependencies": {
     "@types/mocha": "^5.2.7",
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "chalk": "^3.0.0",
+    "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -68,6 +71,7 @@
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.4.0"
   }
 }

@@ -7,6 +7,7 @@ const path = require("path");
 const chalk = require("chalk");
 const cluster = require("cluster");
 const os = require("os");
+const historyApi = require("connect-history-api-fallback");
 
 // env vars
 require("dotenv").config();
@@ -24,7 +25,8 @@ function main(disableMiddleWares = false, logs = true) {
   app.use("/torrent", require("./routes/torrent"));
   app.use("/search", require("./routes/search"));
   app.use("/captions", require("./routes/captions"));
-  app.use("/", express.static(path.resolve("docs", ".vuepress", "dist")));
+  app.use(historyApi());
+  app.use(express.static(path.resolve("docs", ".vuepress", "dist")));
 }
 
 // server listener
