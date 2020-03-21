@@ -3,6 +3,7 @@ node_modules
 .cache
 views/public
 dist
+sslcert
 
 # local env files
 .env

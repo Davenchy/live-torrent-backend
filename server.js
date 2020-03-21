@@ -1,5 +1,4 @@
 const express = require("express");
-const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -11,6 +10,9 @@ const historyApi = require("connect-history-api-fallback");
 
 // env vars
 require("dotenv").config();
+
+const servers = require("./create-server");
+const app = servers.app;
 
 function main(disableMiddleWares = false, logs = true) {
   // middle wares
@@ -35,17 +37,44 @@ function main(disableMiddleWares = false, logs = true) {
 if (!module.parent) {
   if (cluster.isMaster) {
     const cpus = os.cpus().length;
+    const PORT = process.env.PORT || 3000;
+    const SSL_PORT = process.env.SSL_PORT || 443;
+    const env = process.env.NODE_ENV || "development";
+
     for (let i = 0; i < cpus; i++) cluster.fork();
-    cluster.on("exit", () => cluster.fork());
+    cluster.on("exit", () =>
+      cluster.fork({
+        PORT,
+        SSL_PORT
+      })
+    );
+
+    console.log(
+      chalk`Main process is running on process {red ${process.pid}} in {blue ${env}} mode`
+    );
+
+    console.log(chalk`HTTP Server is running on port {green ${PORT}}`);
+    if (servers.isSSLSupported)
+      console.log(chalk`HTTPS Server is running on port {green ${SSL_PORT}}`);
+
+    console.log("");
   } else {
     main();
-    const PORT = process.env.PORT || 3000;
-    const env = process.env.NODE_ENV || "development";
-    app.listen(PORT, () =>
+    const PORT = process.env.PORT;
+    const SSL_PORT = process.env.SSL_PORT;
+
+    servers.httpServer.listen(PORT, () =>
       console.log(
-        chalk`server is running on process {red ${process.pid}} in {blue ${env}} mode on port {green ${PORT}}`
+        chalk`{blue HTTP} server is running on process {red ${process.pid}}`
       )
     );
+
+    if (servers.isSSLSupported)
+      servers.httpsServer.listen(SSL_PORT, () => {
+        console.log(
+          chalk`{yellow HTTPS} server is running on process {red ${process.pid}}`
+        );
+      });
   }
 } else {
   /**
@@ -56,6 +85,6 @@ if (!module.parent) {
    */
   module.exports = (disableMiddleWares = false, logs = true) => {
     main(!!disableMiddleWares, !!logs);
-    return app;
+    return servers;
   };
 }
