@@ -70,3 +70,7 @@ name the certificate file by `servert.crt`
 **OR** use env vars
 
 set the env vars as [here](environment-variables) to files content or files path
+
+- To generate SSL Certification files
+
+`openssl req -new -x509 -nodes --keyout server.key -out server.cert`
