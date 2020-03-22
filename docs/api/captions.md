@@ -8,7 +8,7 @@ It based on [OpenSubtitles.org](https://www.opensubtitles.org) project.
 
 ## Search
 
-The Endpoint -> `/captions/search`
+<try label="The Endpoint:" endpoint="/captions/search" :tryBtn="false" :copyURL="false"/>
 
 - Parameters
 
@@ -58,7 +58,7 @@ You will need to assign an OpenSubtitles user agent to the env variable **OSUA**
 
 ## Movie
 
-The Endpoint -> `/captions/movie/:imdbid`
+<try label="The Endpoint:" endpoint="/captions/movie/:imdbid" :tryBtn="false" :copyURL="false"/>
 
 Get caption for a movie by its IMDBID in vtt format
 
