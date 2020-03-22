@@ -16,5 +16,5 @@ RUN npm run build
 
 EXPOSE 8080
 EXPOSE 443
-ENTRYPOINT [ "./bin/live-torrent-server.js" ]
-# CMD ["node", "./bin/live-torrent-server.js --port 8080 --full-core-clusters"]
+# ENTRYPOINT [ "./bin/live-torrent-server.js" ]
+CMD ["node", "./bin/live-torrent-server.js --port 8080 --full-core-clusters --key sslcert/server.key --cert sslcert/server.crt"]
