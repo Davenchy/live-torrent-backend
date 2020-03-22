@@ -8,9 +8,6 @@ const cluster = require("cluster");
 const os = require("os");
 const historyApi = require("connect-history-api-fallback");
 
-// env vars
-require("dotenv").config();
-
 const servers = require("./create-server");
 const app = servers.app;
 

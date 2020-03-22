@@ -4,6 +4,9 @@ const https = require("https");
 const { existsSync: exists, readFileSync: read } = require("fs");
 const { resolve } = require("path");
 
+// env vars
+require("dotenv").config();
+
 const app = express();
 
 const sslCertPath = resolve("sslcert");
