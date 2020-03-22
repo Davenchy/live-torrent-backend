@@ -40,7 +40,12 @@ for more information about the OpenSubtitles.org api user agent from [here](http
 
 Docker repo: `davenchy/live-torrent-backend`
 
-Container's exported port `3000`
+Container's exported http port `8080`
+Container's exported ssl port `443`
+
+[DockerHub](https://hub.docker.com/repository/docker/davenchy/live-torrent-backend)
+
+See [environment variables](#environment-variables) for more information.
 
 - To Build
 
@@ -70,8 +75,8 @@ name the certificate file by `servert.crt`
 
 **OR** use env vars
 
-set the env vars as [here](environment-variables) to files content or files path
+set the env vars as [here](#environment-variables) to files content or files path
 
 - To generate SSL Certification files
 
-`openssl req -new -x509 -nodes --keyout server.key -out server.cert`
+`openssl req -new -x509 -nodes --keyout server.key -out server.crt`

@@ -23,7 +23,7 @@ It based on [Webtorrent](https://github.com/webtorrent/webtorrent) project.
 
 Live torrent Torrent API supports 4 methods
 
-1. [info](get-torrent-information) `Get information about the torrent or any file(s) it contains`
+1. [info](#get-torrent-information) `Get information about the torrent or any file(s) it contains`
 
 2. [serve](#serve-torrent) `Serve file from inside the torrent`
 
@@ -31,7 +31,7 @@ Live torrent Torrent API supports 4 methods
 
 4. [torrentfile](#get-torrent-file) `Download(.torrent) file`
 
-See [tables](@tables) for more information
+See [tables](#tables) for more information
 
 See [Aliases](#aliases) section for shortcuts
 
@@ -123,21 +123,22 @@ OR
 ## Real Examples
 
 torrent info hash: `08ada5a7a6183aae1e09d831df6748d566095a10`
+
 torrent id: `magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel`
 
 > both gives the same results
 
 you can use them like this
 
-`/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10`
+<try endpoint="/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10"/>
 
 OR
 
-`/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10`
+<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10"/>
 
 OR
 
-`/torrent/info?torrentId=magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel`
+<try endpoint="/torrent/info?torrentId=magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel"/>
 
 ---
 
@@ -159,33 +160,33 @@ OR
 `
 ```
 
-- Serve files
+- Serve files <Badge text="bug" type="error"/>
 
-`/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.en.srt`
+<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.en.srt"/>
 
-`/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.mp4`
+<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.mp4"/>
 
-`/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/poster.jpg`
+<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/poster.jpg"/>
 
 - Get Info
 
-`/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10/1,5,10`
+<try endpoint="/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10/1,5,10"/>
 
 OR
 
-`/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.en.srt,Sintel.mp4,poster.jpg`
+<try endpoint="/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.en.srt,Sintel.mp4,poster.jpg"/>
 
 - Download playlist (.m3u)
 
-`/torrent/playlist/08ada5a7a6183aae1e09d831df6748d566095a10`
+<try endpoint="/torrent/playlist/08ada5a7a6183aae1e09d831df6748d566095a10"/>
 
 - Download torrent file (.torrent)
 
-`/torrent/torrentfile/08ada5a7a6183aae1e09d831df6748d566095a10`
+<try endpoint="/torrent/torrentfile/08ada5a7a6183aae1e09d831df6748d566095a10"/>
 
 OR
 
-`/torrent/torrentfile?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10`
+<try endpoint="/torrent/torrentfile?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10"/>
 
 ## Tables
 

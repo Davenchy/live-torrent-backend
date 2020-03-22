@@ -36,7 +36,7 @@ Search movies
 
 - Results Example
 
-Example `/yts/search?q=shazam`
+<try endpoint="/yts/search?q=shazam"/>
 
 ```json
 {
@@ -129,7 +129,7 @@ The Endpoint -> `/yts/movie/:id`
 
 Get movie details by its id
 
-Example `/yts/movie/12640`
+<try endpoint="/yts/movie/12640"/>
 
 ```json
 {
@@ -249,7 +249,7 @@ The Endpoint -> `/yts/movie/:id/suggestions`
 
 Get suggestions
 
-Example `/yts/movie/12640/suggestions`
+<try endpoint="/yts/movie/12640/suggestions"/>
 
 ```json
 {

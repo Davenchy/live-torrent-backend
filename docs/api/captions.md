@@ -32,7 +32,7 @@ You will need to assign an OpenSubtitles user agent to the env variable **OSUA**
 
 - Caption Object Example
 
-Endpoint `/captions/search?q=shazam&ln=ara&l=1`
+<try endpoint="/captions/search?q=shazam&ln=ara&l=1"/>
 
 ```json
 {
@@ -61,6 +61,8 @@ Endpoint `/captions/search?q=shazam&ln=ara&l=1`
 The Endpoint -> `/captions/movie/:imdbid`
 
 Get caption for a movie by its IMDBID in vtt format
+
+<try endpoint="/captions/movie/tt0448115?lang=ara"/>
 
 - Parameters
 
