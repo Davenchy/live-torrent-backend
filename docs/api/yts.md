@@ -10,7 +10,7 @@ The HTTP Method always **GET** for all endpoints
 
 All the API endpoints return the same data structure as below
 
-| Parameter      | Description                                                                 | Example              |
+| Keys           | Description                                                                 | Example              |
 | -------------- | --------------------------------------------------------------------------- | -------------------- |
 | status         | The returned status for the API call, can be either 'ok' or 'error'         | ok                   |
 | status_message | Either the error message or the successful message                          | Query was successful |
@@ -267,3 +267,36 @@ Get suggestions
   }
 }
 ```
+
+## Serve
+
+The Endpoint -> `/yts/serve/:imdbid`
+
+Serve movie by its IMDB id
+
+- Queries
+
+| Query   | Type   | Required | Default | alias | Description                                                 | Example |
+| ------- | ------ | -------- | ------- | ----- | ----------------------------------------------------------- | ------- |
+| quality | Number | false    | 10      | q     | number represents the quality of the video in range [1, 10] | 8       |
+| size    | Number | false    | 0       | s     | number represents the size of the video in range [1, 10]    | 10      |
+
+> In ranges: 1 is the lowest and 10 is the greatest
+
+> Size default value is zero means ignored
+
+> If size has value then quality will be ignored
+
+- Examples for **Shazam** movie
+
+<try endpoint="tt0448115" label="Movie IMDB Id:" :copyURL="false" :tryBtn="false"/>
+
+<try endpoint="/yts/serve/tt0448115" label="Movie highest quality"/>
+
+<try endpoint="/yts/serve/tt0448115?quality=1" label="Movie lowest quality"/>
+
+<try endpoint="/yts/serve/tt0448115?size=10" label="Movie largest size"/>
+
+<try endpoint="/yts/serve/tt0448115?size=1" label="Movie smallest size"/>
+
+Content-Type: `video/mp4`
