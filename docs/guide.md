@@ -14,6 +14,7 @@ How to use Live Torrent Backend
 | SERVER_KEY  |                    | your ssl private key or its path |
 | SERVER_CERT |                    | your ssl certificate or its path |
 | OSUA        | TemporaryUserAgent | Opensubtitles.org User Agent     |
+| CLUSTERS    | number of cpu cors | run the server in multi threads  |
 
 for more information about the OpenSubtitles.org api user agent from [here](https://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst)
 

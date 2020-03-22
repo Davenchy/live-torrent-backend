@@ -36,7 +36,7 @@ function main(disableMiddleWares = false, logs = true) {
 // @ts-ignore
 if (!module.parent) {
   if (cluster.isMaster) {
-    const cpus = os.cpus().length;
+    const cpus = parseInt(process.env.CLUSTERS) || os.cpus().length;
     const { ENV, PORT, SSL_PORT } = servers;
 
     for (let i = 0; i < cpus; i++) cluster.fork();
