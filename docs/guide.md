@@ -20,6 +20,24 @@ for more information about the OpenSubtitles.org api user agent from [here](http
 
 > Note: you can use .env file to setup vars
 
+## Clone
+
+First of all create a fork then clone the project
+
+```bash
+git clone https://github.com/Davenchy/live-torrent-backend
+
+# install dependencies packages
+npm install
+
+# build docs
+npm run docs:build
+
+# start the server
+npm start
+
+```
+
 ## CLI
 
 - install the live torrent server as a global package

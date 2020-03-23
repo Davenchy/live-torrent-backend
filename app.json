@@ -18,6 +18,11 @@
       "required": false,
       "value": "TemporaryUserAgent"
     },
+    "LIVE_SERVER": {
+      "description": "Docs try button live server url",
+      "required": false,
+      "value": "https://live-torrent-server.herokuapp.com"
+    },
     "SERVER_KEY": {
       "description": "server ssl protocol private key file content",
       "required": false,

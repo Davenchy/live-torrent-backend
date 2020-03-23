@@ -15,8 +15,12 @@ home: true
 
 This project is the backend for the [live torrent](https://github.com/Davenchy/live-torrent) project.
 
-- Search, explore and download torrent files online.
+- Search, explore, serve and download torrent files online.
 
-- find subtitles
+- Find captions.
 
-[Get Start](/guide)
+- Stream YTS movies and collect its details through The YTS api.
+
+[Get Start](/guide) Live torrent backend version: {{ $themeConfig.version }}
+
+[![Support Brave Browser](/brave.png)](https://brave.com/liv557)

@@ -2,21 +2,12 @@
   <p>
     <span v-if="label">{{label}}</span>
     <code v-if="endpoint">{{endpoint}}</code>
-    <a
-      target="_blank"
-      rel="noopener noreferrer"
-      :href="$themeConfig.liveServer + endpoint"
-      v-if="tryBtn"
-    >
+    <a target="_blank" rel="noopener noreferrer" :href="url" v-if="tryBtn">
       {{ text }}
       <OutboundLink v-if="tryBtn" />
     </a>
     <a @click="copyToClipboard(endpoint)" v-if="copyEndpoint" class="copy1">Copy</a>
-    <a
-      @click="copyToClipboard($themeConfig.liveServer + endpoint)"
-      v-if="copyURL"
-      class="copy"
-    >Copy URL</a>
+    <a @click="copyToClipboard(url)" v-if="copyURL" class="copy">Copy URL</a>
   </p>
 </template>
 
@@ -60,6 +51,13 @@ export default {
       el.select();
       document.execCommand("copy");
       document.body.removeChild(el);
+    }
+  },
+  computed: {
+    url() {
+      const { $themeConfig: config, endpoint } = this;
+      const { liveServer: server } = config;
+      return server + endpoint;
     }
   }
 };
