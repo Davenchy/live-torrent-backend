@@ -1,5 +1,5 @@
 const app = require("express")();
-const OS = require("opensubtitles-api");
+const OSAPI = require("opensubtitles-api");
 const axios = require("axios").default;
 const encodingDetector = require("jschardet");
 const iconv = require("iconv-lite");
@@ -8,15 +8,15 @@ const srt2vtt = require("srt-to-vtt");
 
 // console.log(typeof formatConverter);
 
-const OpenSubtitles = new OS(process.env.OSUA || "TemporaryUserAgent");
+const api = new OSAPI(process.env.OSUA || "TemporaryUserAgent");
 let isLoggedIn = null;
 
 // is logged in middleware
 app.use(
   (req, res, next) => {
     if (isLoggedIn === null)
-      OpenSubtitles.api
-        .LogIn()
+      api
+        .login()
         .then(() => {
           isLoggedIn = true;
           console.log("OpenSubtitles.org: LoggedIn");
@@ -45,16 +45,17 @@ app.get("/search", (req, res) => {
     imdbid = rq.imdbid || rq.im,
     fps = rq.fps || rq.f;
 
-  OpenSubtitles.search({
-    sublanguageid,
-    query,
-    limit,
-    season,
-    episode,
-    imdbid,
-    fps,
-    extensions: ["srt", "vtt"]
-  })
+  api
+    .search({
+      sublanguageid,
+      query,
+      limit,
+      season,
+      episode,
+      imdbid,
+      fps,
+      extensions: ["srt", "vtt"]
+    })
     .then(data => res.send(data))
     .catch(err => {
       console.error(err);
@@ -76,13 +77,14 @@ const loadMovieData = (req, res, next) => {
 const movieCaption = (req, res, next) => {
   const { id, lang, fps } = req.movie;
 
-  OpenSubtitles.search({
-    sublanguageid: lang,
-    imdbid: id,
-    limit: 1,
-    extensions: ["srt", "vtt"],
-    fps
-  })
+  api
+    .search({
+      sublanguageid: lang,
+      imdbid: id,
+      limit: 1,
+      extensions: ["srt", "vtt"],
+      fps
+    })
     .then(data => {
       const captionLangObj = Object.values(data)[0];
       if (!captionLangObj) return res.sendStatus(404);
