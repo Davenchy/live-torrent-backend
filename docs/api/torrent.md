@@ -8,6 +8,11 @@ The HTTP Method always **GET**
 
 It based on [Webtorrent](https://github.com/webtorrent/webtorrent) project.
 
+- Table of Contents
+  [[toc]]
+
+## Steps
+
 - Three easy steps to use the api
 
 1. select [method](#methods)

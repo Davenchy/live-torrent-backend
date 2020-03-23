@@ -6,6 +6,9 @@ It based on [yts.am](https://yts.mx/api) api.
 
 The HTTP Method always **GET** for all endpoints
 
+- Table of Contents
+  [[toc]]
+
 ## Response Structure
 
 All the API endpoints return the same data structure as below

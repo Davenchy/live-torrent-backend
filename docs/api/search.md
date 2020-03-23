@@ -2,6 +2,11 @@
 
 use **The Search API** to find torrent files
 
+- Table of Contents
+  [[toc]]
+
+## Search
+
 The Endpoint -> `/search`
 
 The HTTP Method always **GET**

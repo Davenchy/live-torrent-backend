@@ -6,6 +6,9 @@ The HTTP Method always **GET** for all endpoints
 
 It based on [OpenSubtitles.org](https://www.opensubtitles.org) project.
 
+- Table of Contents
+  [[toc]]
+
 ## Search
 
 <try label="The Endpoint:" endpoint="/captions/search" :tryBtn="false" :copyURL="false"/>
