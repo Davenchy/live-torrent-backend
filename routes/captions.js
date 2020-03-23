@@ -3,8 +3,9 @@ const OSAPI = require("opensubtitles-api");
 const axios = require("axios").default;
 const encodingDetector = require("jschardet");
 const iconv = require("iconv-lite");
-const { Readable } = require("stream");
 const srt2vtt = require("srt-to-vtt");
+const isoCodes = require("iso-language-codes");
+const { Readable } = require("stream");
 
 // console.log(typeof formatConverter);
 
@@ -155,6 +156,36 @@ const sendCaptions = (req, res) => {
   console.log("sending");
   res.send(caption.data);
 };
+
+// get all supported languages
+app.get("/movie/:imdbid/langs", (req, res) => {
+  const id = req.params.imdbid;
+  api
+    .search({
+      imdbid: id,
+      limit: "best"
+    })
+    .then(data => {
+      const langs = Object.keys(data).map((a, i) => {
+        const d = isoCodes.by639_1[a];
+        const b = data[a];
+
+        if (d)
+          return {
+            name: d.name,
+            code: d.iso639_1,
+            iso: d.iso639_2B
+          };
+        else
+          return {
+            name: b.lang,
+            code: b.langcode,
+            iso: b.langcode
+          };
+      });
+      res.send(langs);
+    });
+});
 
 app.get(
   "/movie/:imdbid",

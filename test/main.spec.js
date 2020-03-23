@@ -86,6 +86,16 @@ describe("Captions API", function() {
         done();
       });
   });
+
+  it("get all supported languages 'tt0448115'", function(done) {
+    agent.get("/captions/movie/tt0448115/langs").end((err, res) => {
+      isGoodResponse(err, res);
+      expect(res.body)
+        .to.be.an("Array")
+        .with.length.greaterThan(0);
+      done();
+    });
+  });
 });
 
 describe("Search API", function() {

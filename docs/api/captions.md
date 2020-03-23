@@ -73,3 +73,23 @@ Get caption for a movie by its IMDBID in vtt format
 | allow_srt | Boolean | false    | false   | s     | if caption format srt then don't convert it to vtt | true    |
 
 The result type can be `application/x-subrip` for `.srt` files or `text/vtt` for `.vtt` files
+
+## Languages
+
+<try label="The Endpoint:" endpoint="/captions/movie/:imdbid/langs" :tryBtn="false" :copyURL="false"/>
+
+Get all exist caption languages of a movie by its IMDBID
+
+<try endpoint="/captions/movie/tt0448115/langs"/>
+
+Returns an **Array** of objects
+
+- The Object
+
+```json
+{
+  "name": "English",
+  "code": "en",
+  "iso": "eng"
+}
+```
