@@ -160,15 +160,25 @@ OR
 `
 ```
 
-- Serve files <Badge text="bug" type="error"/>
+- Serve files
 
-<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.en.srt"/>
+> Note: Serve method doesn't support multi file selectors
 
-<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.mp4"/>
+<try endpoint="/torrent/serve?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10&filePath=Sintel.en.srt"/>
 
-<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10/poster.jpg"/>
+<try endpoint="/torrent/serve/08ada5a7a6183aae1e09d831df6748d566095a10/poster.jpg"/>
+
+<try endpoint="/torrent/serve/08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.mp4"/>
 
 - Get Info
+
+<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10&filePath=Sintel.en.srt"/>
+
+<try endpoint="/torrent/info?torrentId=08ada5a7a6183aae1e09d831df6748d566095a10&filePath=poster.jpg"/>
+
+<try endpoint="/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10/Sintel.mp4"/>
+
+OR
 
 <try endpoint="/torrent/info/08ada5a7a6183aae1e09d831df6748d566095a10/1,5,10"/>
 

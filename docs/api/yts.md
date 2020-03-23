@@ -268,11 +268,11 @@ Get suggestions
 }
 ```
 
-## Serve
+## Stream
 
-The Endpoint -> `/yts/serve/:imdbid`
+The Endpoint -> `/yts/stream/:imdbid`
 
-Serve movie by its IMDB id
+Stream movie by its IMDB id
 
 - Queries
 
@@ -291,12 +291,12 @@ Serve movie by its IMDB id
 
 <try endpoint="tt0448115" label="Movie IMDB Id:" :copyURL="false" :tryBtn="false"/>
 
-<try endpoint="/yts/serve/tt0448115" label="Movie highest quality"/>
+<try endpoint="/yts/stream/tt0448115" label="Movie highest quality"/>
 
-<try endpoint="/yts/serve/tt0448115?quality=1" label="Movie lowest quality"/>
+<try endpoint="/yts/stream/tt0448115?quality=1" label="Movie lowest quality"/>
 
-<try endpoint="/yts/serve/tt0448115?size=10" label="Movie largest size"/>
+<try endpoint="/yts/stream/tt0448115?size=10" label="Movie largest size"/>
 
-<try endpoint="/yts/serve/tt0448115?size=1" label="Movie smallest size"/>
+<try endpoint="/yts/stream/tt0448115?size=1" label="Movie smallest size"/>
 
 Content-Type: `video/mp4`

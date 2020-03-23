@@ -12,15 +12,15 @@ It based on [OpenSubtitles.org](https://www.opensubtitles.org) project.
 
 - Parameters
 
-| Parameter | Type          | Required | Default | alias | Description                              | Example  |
-| --------- | ------------- | -------- | ------- | ----- | ---------------------------------------- | -------- |
-| query     | String        | \*       |         | q     | keyword to be used in the search process | shazam   |
-| lang      | String        | false    | all     | ln    | language id of captions                  | ara      |
-| limit     | String/Number | false    | best    | l     | limit results for quality or number      | best     |
-| imdbid    | String/Number | \*       |         | im    | find captions with movie's IMDBID        | tt528809 |
-| fps       | String        | false    |         | f     | number of frames per sec in the video    | 23.96    |
-| season    | Number        | false    |         | s     | find captions for series's season        | 2        |
-| episode   | Number        | false    |         | e     | find captions for series's episode       | 3        |
+| Parameter | Type          | Required | Default | alias | Description                              | Example   |
+| --------- | ------------- | -------- | ------- | ----- | ---------------------------------------- | --------- |
+| query     | String        | \*       |         | q     | keyword to be used in the search process | shazam    |
+| lang      | String        | false    | all     | ln    | language id of captions                  | ara       |
+| limit     | String/Number | false    | best    | l     | limit results for quality or number      | best      |
+| imdbid    | String/Number | \*       |         | im    | find captions with movie's IMDBID        | tt0448115 |
+| fps       | String        | false    |         | f     | number of frames per sec in the video    | 23.96     |
+| season    | Number        | false    |         | s     | find captions for series's season        | 2         |
+| episode   | Number        | false    |         | e     | find captions for series's episode       | 3         |
 
 > Required one of two parameters 'query' or 'imdbid'
 
