@@ -5,83 +5,186 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const { expect } = chai;
 
-const app = require("../server")(true);
+const { httpServer, app } = require("../server")();
+const getPort = require("get-port");
+let agent;
 
-app.listen(3000, () => console.log("server is running on port 3000"));
-const agent = chai.request.agent(app);
+before(function() {
+  return new Promise(resolve => {
+    getPort().then(port => {
+      httpServer.listen(port, () => {
+        console.log("testing http server on port", port);
+        agent = chai.request.agent(app);
+        resolve();
+      });
+    });
+  });
+});
 
-describe("testing captions", function() {
-  it("search for shazam arabic caption", function(done) {
-    this.timeout(10000);
+const isGoodResponse = (err, res) => {
+  if (err) throw err;
+  expect(err).to.be.null;
+  expect(res).status(200);
+  expect(res).to.be.json;
+};
+
+// captions section
+describe("Captions API", function() {
+  this.timeout(15000);
+  this.retries(4);
+
+  it("search for Shazam arabic caption", function(done) {
     agent
-      .get("/captions")
+      .get("/captions/search")
       .query({
         query: "shazam",
         limit: "best",
         lang: "ara"
       })
       .end((err, res) => {
-        expect(err).to.be.null;
-        expect(res).status(200);
-        expect(res).to.be.json;
+        isGoodResponse(err, res);
         const body = res.body;
-        expect(Object.keys(body).length).eqls(1);
+        const langs = Object.keys(body);
+        expect(langs.length).eqls(1);
+        expect(langs[0]).eqls("ar");
         expect(body.ar).to.be.an("object");
         expect(body.ar.filename).contains("Shazam");
         done();
       });
   });
 
-  it("search for spider man far from home arabic caption", function(done) {
-    this.timeout(10000);
+  it("search for Shazam english caption using its imdb id 'tt0448115'", function(done) {
     agent
-      .get("/captions")
+      .get("/captions/search")
       .query({
-        query: "spider man far from home",
+        imdbid: "tt0448115",
         limit: "best",
+        lang: "eng"
+      })
+      .end((err, res) => {
+        isGoodResponse(err, res);
+        const body = res.body;
+        const langs = Object.keys(body);
+        expect(langs.length).eqls(1);
+        expect(langs[0]).eqls("en");
+        expect(body.en).to.be.an("object");
+        expect(body.en.filename).contains("Shazam");
+        done();
+      });
+  });
+
+  it("get Shazam arabic caption using its movie imdbid 'tt0448115'", function(done) {
+    agent
+      .get("/captions/movie/tt0448115")
+      .query({
         lang: "ara"
       })
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).status(200);
-        expect(res).to.be.json;
-        expect(Object.keys(res.body).length).eqls(1);
-        expect(res.body.ar).to.be.an("object");
-        expect(res.body.ar.filename).contains("Spider");
+        expect(res.type).eqls("text/vtt");
         done();
       });
   });
 });
 
-describe("testing torrent search engine", function() {
-  this.timeout(10000);
-  it("check search engine providers list", function(done) {
+describe("Search API", function() {
+  this.timeout(30000);
+  this.retries(4);
+
+  it("engine providers", function(done) {
     agent.get("/search/providers").end((err, res) => {
-      expect(err).to.be.null;
-      expect(res).to.have.status(200);
-      expect(res).to.be.json;
+      isGoodResponse(err, res);
       expect(res.body).to.be.an("array");
       expect(res.body.length).to.be.greaterThan(1);
       done();
     });
   });
 
-  it("searching for a yts spider man far from home torrent file", function(done) {
+  it("searching for Shazam movie", function(done) {
+    this.timeout(30000);
+    this.retries(4);
     agent
       .get("/search")
       .query({
-        query: "spiderman",
+        query: "Shazam",
         provider: "1337x",
-        category: "Movies",
         limit: 1
       })
       .end((err, res) => {
-        expect(err).to.be.null;
-        expect(res).to.have.status(200);
-        expect(res).to.be.json;
+        isGoodResponse(err, res);
         expect(res.body).to.be.an("array");
         expect(res.body.length).eqls(1);
-        expect(res.body[0].title).contains("Spider-Man");
+        expect(res.body[0].title).contains("Shazam");
+        done();
+      });
+  });
+});
+
+describe("YTS API", function() {
+  let movie;
+  this.timeout(30000);
+  this.retries(4);
+
+  it("search for Shazam movie", function(done) {
+    agent
+      .get("/yts/search")
+      .query({
+        query: "shazam",
+        limit: 1,
+        sort: "year",
+        order: "asc"
+      })
+      .end((err, res) => {
+        isGoodResponse(err, res);
+        const body = res.body;
+        expect(body.status).eqls("ok");
+        expect(res.body.data.movies)
+          .to.be.an("Array")
+          .length(1);
+
+        movie = res.body.data.movies[0];
+        expect(movie.title).contains("Shazam");
+        done();
+      });
+  });
+
+  it("get Shazam movie details", function(done) {
+    if (!movie) this.skip();
+    agent.get(`/yts/movie/${movie.id}`).end((err, res) => {
+      isGoodResponse(err, res);
+      const data = res.body.data.movie;
+      expect(res.body.status).eqls("ok");
+      expect(data.title_long).eqls(movie.title_long);
+      expect(data.id).eqls(movie.id);
+      expect(data.imdb_code).eqls(movie.imdb_code);
+      done();
+    });
+  });
+
+  it("get movie suggestions", function(done) {
+    if (!movie) this.skip();
+    agent.get(`/yts/movie/${movie.id}/suggestions`).end((err, res) => {
+      isGoodResponse(err, res);
+      expect(res.body.status).eqls("ok");
+      expect(res.body.data.movie_count).eqls(4);
+      done();
+    });
+  });
+
+  it("stream Shazam movie", function(done) {
+    agent
+      .get(`/yts/stream/${movie.imdb_code}`)
+      .query({ size: 1 })
+      .buffer()
+      .parse((res, cb) => {
+        expect(res).status(200);
+        expect(res).header("Content-Type", "video/mp4");
+        cb(null);
+      })
+      .end(err => {
+        if (err) throw err;
+        expect(err).to.be.null;
         done();
       });
   });
@@ -99,49 +202,22 @@ const successResponse = (err, res) => {
 const handleInfoTest = done => (err, res) => {
   successResponse(err, res);
   expect(res).to.be.json;
-  expect(res.body).to.be.an("object");
   expect(res.body.name).eqls("Sintel");
   expect(res.body.infoHash).eqls(infoHash);
   done();
 };
 
-const handleServeTest = done => (err, res) => {
+const generalHandler = (done, type) => (err, res) => {
   successResponse(err, res);
-  expect(res.type).eqls("application/x-subrip");
-  expect(res).header("Content-Length", "1652");
-  expect(res).header(
-    "Content-Disposition",
-    'attachment; filename="Sintel.de.srt"'
-  );
+  expect(res.type).eqls(type);
   done();
 };
 
-const handlePlaylistTest = done => (err, res) => {
-  successResponse(err, res);
-  expect(res.type).eqls("application/mpegurl");
-  expect(res).header("Content-Length", "123");
-  expect(res).header(
-    "Content-Disposition",
-    'attachment; filename="Sintel.m3u"'
-  );
-  done();
-};
-
-const handleTorrentFileTest = done => (err, res) => {
-  successResponse(err, res);
-  expect(res.type).eqls("application/x-bittorrent");
-  expect(res).header(
-    "Content-Disposition",
-    'attachment; filename="Sintel.torrent"'
-  );
-  done();
-};
-
-describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torrentId}`, function() {
-  this.timeout(10000);
+describe(`Torrent API\nInfo Hash: ${infoHash}\nTorrent Id: ${torrentId}`, function() {
+  this.timeout(30000);
+  this.retries(4);
 
   // info method
-
   it("collecting torrent file info using torrent id", function(done) {
     agent
       .get("/torrent/info")
@@ -154,7 +230,6 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
   });
 
   // serve method
-
   it("serving file using filePath [torrentId]", function(done) {
     agent
       .get("/torrent/serve/")
@@ -162,7 +237,7 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
         torrentId,
         filePath: "Sintel.de.srt"
       })
-      .end(handleServeTest(done));
+      .end(generalHandler(done, "application/x-subrip"));
   });
 
   it("serving file using fileIndex [torrentId]", function(done) {
@@ -172,7 +247,7 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
         torrentId,
         fileIndex: 0
       })
-      .end(handleServeTest(done));
+      .end(generalHandler(done, "application/x-subrip"));
   });
 
   it("serving file using fileType using typeInfo [torrentId]", function(done) {
@@ -182,23 +257,25 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
         torrentId,
         fileType: "application/x-subrip"
       })
-      .end(handleServeTest(done));
+      .end(generalHandler(done, "application/x-subrip"));
   });
 
   it("serving file using file path [selectors]", function(done) {
     agent
       .get(`/torrent/serve/${infoHash}/Sintel.de.srt`)
-      .end(handleServeTest(done));
+      .end(generalHandler(done, "application/x-subrip"));
   });
 
   it("serving file using file index [selectors]", function(done) {
-    agent.get(`/torrent/serve/${infoHash}/0`).end(handleServeTest(done));
+    agent
+      .get(`/torrent/serve/${infoHash}/0`)
+      .end(generalHandler(done, "application/x-subrip"));
   });
 
   it("serving file using file type [selectors]", function(done) {
     agent
       .get(`/torrent/serve/${infoHash}/:application/x-subrip`)
-      .end(handleServeTest(done));
+      .end(generalHandler(done, "application/x-subrip"));
   });
 
   // playlist method
@@ -209,11 +286,13 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
       .query({
         torrentId
       })
-      .end(handlePlaylistTest(done));
+      .end(generalHandler(done, "application/mpegurl"));
   });
 
   it("get a playlist using info hash", function(done) {
-    agent.get(`/torrent/playlist/${infoHash}`).end(handlePlaylistTest(done));
+    agent
+      .get(`/torrent/playlist/${infoHash}`)
+      .end(generalHandler(done, "application/mpegurl"));
   });
 
   // get torrent file [.torrent]
@@ -221,12 +300,12 @@ describe(`testing torrent services\nInfo Hash: ${infoHash}\nTorrent Id: ${torren
   it("get torrent file [.torrent] using torrent id", function(done) {
     agent
       .get(`/torrent/torrentfile/${infoHash}`)
-      .end(handleTorrentFileTest(done));
+      .end(generalHandler(done, "application/x-bittorrent"));
   });
   it("get torrent file [.torrent] using info hash", function(done) {
     agent
       .get("/torrent/torrentfile/")
       .query({ torrentId })
-      .end(handleTorrentFileTest(done));
+      .end(generalHandler(done, "application/x-bittorrent"));
   });
 });
