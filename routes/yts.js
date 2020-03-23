@@ -64,17 +64,14 @@ router.get("/stream/:imdbid", (req, res) => {
       }
     })
     .then(({ data }) => {
-      console.log("movie data is here");
       if (data.status !== "ok") throw new Error(data.status_message);
       if (data.data.movie_count === 0) return res.sendStatus(404);
       const { torrents } = data.data.movies[0];
       const torrent = selectMovieTorrent(torrents, quality, size);
       if (!torrent) return res.sendStatus(404);
       if (torrent.err) return res.status(torrent.code).send(torrent.err);
-      console.log(torrent.type, torrent.quality);
       torrentsLib.request(torrent.hash, (err, torrent) => {
         if (err) throw new Error(err);
-        console.log("load");
         const file = torrent.files.find(
           f => mime.getType(f.name).indexOf("video") !== -1
         );
