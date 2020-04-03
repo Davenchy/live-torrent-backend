@@ -9,3 +9,37 @@ This project is the backend server of [The Live Torrent](https://github.com/Dave
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Davenchy/live-torrent-backend)
 
 - [Documentations](https://github.com/Davenchy/live-torrent-backend/wiki)
+
+# Quick Guide
+
+- You can host on Heroku using Heroku Deploy Button
+
+- Or cloning and run locally
+
+```bash
+# clone repo
+git clone https://github.com/Davenchy/live-torrent-backend.git
+
+# open the project directory
+cd live-torrent-backend
+
+# install dependencies
+npm install
+
+# run the server
+npm start
+```
+
+- Install as a global package using npm
+
+```bash
+npm install -g live-torrent-backend
+```
+
+- Docker Container
+
+Docker Repo: `davenchy/live-torrent-backend`
+
+---
+
+For more details check the documentation

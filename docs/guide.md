@@ -30,9 +30,6 @@ git clone https://github.com/Davenchy/live-torrent-backend
 # install dependencies packages
 npm install
 
-# build docs
-npm run docs:build
-
 # start the server
 npm start
 

@@ -7,8 +7,7 @@
     "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
     "test": "mocha --exit",
-    "serve": "npm run docs:dev",
-    "build": "npm run docs:build",
+    "postinstall": "npm run docs:build",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs"
   },
