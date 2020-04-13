@@ -9,16 +9,6 @@ The HTTP Method always **GET** for all endpoints
 - Table of Contents
   [[toc]]
 
-## Response Structure
-
-All the API endpoints return the same data structure as below
-
-| Keys           | Description                                                                 | Example              |
-| -------------- | --------------------------------------------------------------------------- | -------------------- |
-| status         | The returned status for the API call, can be either 'ok' or 'error'         | ok                   |
-| status_message | Either the error message or the successful message                          | Query was successful |
-| data           | If 'status' is returned as 'ok' the API query results will be inside 'data' | Object               |
-
 ## Search
 
 The Endpoint -> `/yts/search`
@@ -43,96 +33,79 @@ Search movies
 
 ```json
 {
-  "status": "ok",
-  "status_message": "Query was successful",
-  "data": {
-    "movie_count": 1,
-    "limit": 20,
-    "page_number": 1,
-    "movies": [
-      {
-        "id": 12640,
-        "url": "https://yts.mx/movie/shazam-2019",
-        "imdb_code": "tt0448115",
-        "title": "Shazam!",
-        "title_english": "Shazam!",
-        "title_long": "Shazam! (2019)",
-        "slug": "shazam-2019",
-        "year": 2019,
-        "rating": 7.1,
-        "runtime": 132,
-        "genres": ["Action", "Adventure", "Comedy", "Fantasy"],
-        "summary": "...",
-        "description_full": "...",
-        "synopsis": "...",
-        "yt_trailer_code": "go6GEIrcvFY",
-        "language": "English",
-        "mpa_rating": "PG-13",
-        "background_image": "https://yts.mx/assets/images/movies/shazam_2019/background.jpg",
-        "background_image_original": "https://yts.mx/assets/images/movies/shazam_2019/background.jpg",
-        "small_cover_image": "https://yts.mx/assets/images/movies/shazam_2019/small-cover.jpg",
-        "medium_cover_image": "https://yts.mx/assets/images/movies/shazam_2019/medium-cover.jpg",
-        "large_cover_image": "https://yts.mx/assets/images/movies/shazam_2019/large-cover.jpg",
-        "state": "ok",
-        "torrents": [
-          {
-            "url": "https://yts.mx/torrent/download/04F45DF29C2AC4876227090DF72EF41D25932144",
-            "hash": "04F45DF29C2AC4876227090DF72EF41D25932144",
-            "quality": "3D",
-            "type": "bluray",
-            "seeds": 51,
-            "peers": 14,
-            "size": "2.11 GB",
-            "size_bytes": 2265595249,
-            "date_uploaded": "2019-07-18 22:04:20",
-            "date_uploaded_unix": 1563480260
-          },
-          {
-            "url": "https://yts.mx/torrent/download/77FC1E25B1B295D7827022712CB89C994A193427",
-            "hash": "77FC1E25B1B295D7827022712CB89C994A193427",
-            "quality": "720p",
-            "type": "bluray",
-            "seeds": 1180,
-            "peers": 273,
-            "size": "1.1 GB",
-            "size_bytes": 1181116006,
-            "date_uploaded": "2019-06-26 21:51:06",
-            "date_uploaded_unix": 1561578666
-          },
-          {
-            "url": "https://yts.mx/torrent/download/97F58867E989E0DA30CFC56522B08A01646F27D1",
-            "hash": "97F58867E989E0DA30CFC56522B08A01646F27D1",
-            "quality": "1080p",
-            "type": "bluray",
-            "seeds": 1547,
-            "peers": 447,
-            "size": "2.11 GB",
-            "size_bytes": 2265595249,
-            "date_uploaded": "2019-06-27 00:06:40",
-            "date_uploaded_unix": 1561586800
-          }
-        ],
-        "date_uploaded": "2019-06-26 21:51:06",
-        "date_uploaded_unix": 1561578666
-      }
-    ]
-  },
-  "@meta": {
-    "server_time": ...,
-    "server_timezone": "CET",
-    "api_version": 2,
-    "execution_time": "0 ms"
-  }
+  "id": 12640,
+  "url": "https://yts.mx/movie/shazam-2019",
+  "imdb_code": "tt0448115",
+  "title": "Shazam!",
+  "title_english": "Shazam!",
+  "title_long": "Shazam! (2019)",
+  "slug": "shazam-2019",
+  "year": 2019,
+  "rating": 7.1,
+  "runtime": 132,
+  "genres": ["Action", "Adventure", "Comedy", "Fantasy"],
+  "summary": "...",
+  "description_full": "...",
+  "synopsis": "...",
+  "yt_trailer_code": "go6GEIrcvFY",
+  "language": "English",
+  "mpa_rating": "PG-13",
+  "background_image": "https://yts.mx/assets/images/movies/shazam_2019/background.jpg",
+  "background_image_original": "https://yts.mx/assets/images/movies/shazam_2019/background.jpg",
+  "small_cover_image": "https://yts.mx/assets/images/movies/shazam_2019/small-cover.jpg",
+  "medium_cover_image": "https://yts.mx/assets/images/movies/shazam_2019/medium-cover.jpg",
+  "large_cover_image": "https://yts.mx/assets/images/movies/shazam_2019/large-cover.jpg",
+  "state": "ok",
+  "torrents": [
+    {
+      "url": "https://yts.mx/torrent/download/04F45DF29C2AC4876227090DF72EF41D25932144",
+      "hash": "04F45DF29C2AC4876227090DF72EF41D25932144",
+      "quality": "3D",
+      "type": "bluray",
+      "seeds": 51,
+      "peers": 14,
+      "size": "2.11 GB",
+      "size_bytes": 2265595249,
+      "date_uploaded": "2019-07-18 22:04:20",
+      "date_uploaded_unix": 1563480260
+    },
+    {
+      "url": "https://yts.mx/torrent/download/77FC1E25B1B295D7827022712CB89C994A193427",
+      "hash": "77FC1E25B1B295D7827022712CB89C994A193427",
+      "quality": "720p",
+      "type": "bluray",
+      "seeds": 1180,
+      "peers": 273,
+      "size": "1.1 GB",
+      "size_bytes": 1181116006,
+      "date_uploaded": "2019-06-26 21:51:06",
+      "date_uploaded_unix": 1561578666
+    },
+    {
+      "url": "https://yts.mx/torrent/download/97F58867E989E0DA30CFC56522B08A01646F27D1",
+      "hash": "97F58867E989E0DA30CFC56522B08A01646F27D1",
+      "quality": "1080p",
+      "type": "bluray",
+      "seeds": 1547,
+      "peers": 447,
+      "size": "2.11 GB",
+      "size_bytes": 2265595249,
+      "date_uploaded": "2019-06-27 00:06:40",
+      "date_uploaded_unix": 1561586800
+    }
+  ],
+  "date_uploaded": "2019-06-26 21:51:06",
+  "date_uploaded_unix": 1561578666
 }
 ```
 
 ## Movie Details
 
-The Endpoint -> `/yts/movie/:id`
+<Badge text="updated" type="warn"/>
 
-Get movie details by its id
+This Endpoint -> `/yts/movie/:imdbid`
 
-<try endpoint="/yts/movie/12640"/>
+<try endpoint="/yts/movie/tt0448115"/>
 
 ```json
 {
@@ -248,30 +221,99 @@ Get movie details by its id
 
 ## Suggestions
 
-The Endpoint -> `/yts/movie/:id/suggestions`
+<Badge text="updated" type="warn"/>
+
+The Endpoint -> `/yts/movie/:imdbid/suggestions`
 
 Get suggestions
 
-<try endpoint="/yts/movie/12640/suggestions"/>
+<try endpoint="/yts/movie/tt0448115/suggestions"/>
 
 ```json
-{
-  "status": "ok",
-  "status_message": "Query was successful",
-  "data": {
-    "movie_count": 4,
-    "movies": [...]
+[
+  {
+    "id": 1578,
+    "url": "https://yts.mx/movie/identity-thief-2013",
+    "imdb_code": "tt2024432",
+    "title": "Identity Thief",
+    "title_english": "Identity Thief",
+    "title_long": "Identity Thief (2013)",
+    "slug": "identity-thief-2013",
+    "year": 2013,
+    "rating": 5.7,
+    "runtime": 111,
+    "genres": ["Action", "Adventure", "Comedy", "Crime", "Drama", "Thriller"],
+    "summary": "Sandy Patterson (Jason Bateman) gets a nice call confirming his name and other identifying information. The next thing he knows, a spa in Florida is reminding him of his appointment and his credit cards are maxed out. With his identity stolen, Sandy leaves his wife, kids and job to literally bring the thief to justice in Colorado. Keeping tabs on the other Sandy (Melissa McCarthy) and run-ins with bounty hunters is harder than he was expecting, and ultimately the cross-country trip is going to find both Sandys learning life tips from one another.",
+    "description_full": "Sandy Patterson (Jason Bateman) gets a nice call confirming his name and other identifying information. The next thing he knows, a spa in Florida is reminding him of his appointment and his credit cards are maxed out. With his identity stolen, Sandy leaves his wife, kids and job to literally bring the thief to justice in Colorado. Keeping tabs on the other Sandy (Melissa McCarthy) and run-ins with bounty hunters is harder than he was expecting, and ultimately the cross-country trip is going to find both Sandys learning life tips from one another.",
+    "synopsis": "Sandy Patterson (Jason Bateman) gets a nice call confirming his name and other identifying information. The next thing he knows, a spa in Florida is reminding him of his appointment and his credit cards are maxed out. With his identity stolen, Sandy leaves his wife, kids and job to literally bring the thief to justice in Colorado. Keeping tabs on the other Sandy (Melissa McCarthy) and run-ins with bounty hunters is harder than he was expecting, and ultimately the cross-country trip is going to find both Sandys learning life tips from one another.",
+    "yt_trailer_code": "uO12W35DpsQ",
+    "language": "English",
+    "mpa_rating": "R",
+    "background_image": "https://yts.mx/assets/images/movies/Identity_Thief_2013_UNRATED/background.jpg",
+    "background_image_original": "https://yts.mx/assets/images/movies/Identity_Thief_2013_UNRATED/background.jpg",
+    "small_cover_image": "https://yts.mx/assets/images/movies/Identity_Thief_2013_UNRATED/small-cover.jpg",
+    "medium_cover_image": "https://yts.mx/assets/images/movies/Identity_Thief_2013_UNRATED/medium-cover.jpg",
+    "state": "ok",
+    "torrents": [
+      {
+        "url": "https://yts.mx/torrent/download/752FEE82C0C28137A938A405D0A4B999AAA1A81B",
+        "hash": "752FEE82C0C28137A938A405D0A4B999AAA1A81B",
+        "quality": "720p",
+        "seeds": 35,
+        "peers": 2,
+        "size": "870.84 MB",
+        "size_bytes": 913141924,
+        "date_uploaded": "2015-11-01 00:11:30",
+        "date_uploaded_unix": 1446333090
+      },
+      {
+        "url": "https://yts.mx/torrent/download/0E9EE082BD954D3F07ACDE2B02BDAAFA295B10F8",
+        "hash": "0E9EE082BD954D3F07ACDE2B02BDAAFA295B10F8",
+        "quality": "1080p",
+        "seeds": 22,
+        "peers": 5,
+        "size": "1.85 GB",
+        "size_bytes": 1986422374,
+        "date_uploaded": "2015-11-01 00:11:36",
+        "date_uploaded_unix": 1446333096
+      }
+    ],
+    "date_uploaded": "2015-11-01 00:11:30",
+    "date_uploaded_unix": 1446333090
   },
-  "@meta": {
-    "server_time": ...,
-    "server_timezone": "CET",
-    "api_version": 2,
-    "execution_time": "0 ms"
-  }
-}
+  ...
+]
+```
+
+## Torrents and Qualities
+
+<Badge text="new"/>
+
+The Endpoint -> `/yts/torrents/:imdbid`
+
+<try endpoint="/yts/torrents/tt0448115"/>
+
+```json
+[
+  {
+    "url": "https://yts.mx/torrent/download/04F45DF29C2AC4876227090DF72EF41D25932144",
+    "hash": "04F45DF29C2AC4876227090DF72EF41D25932144",
+    "quality": "3D",
+    "type": "bluray",
+    "seeds": 36,
+    "peers": 9,
+    "size": "2.11 GB",
+    "size_bytes": 2265595249,
+    "date_uploaded": "2019-07-18 22:04:20",
+    "date_uploaded_unix": 1563480260
+  },
+  ...
+]
 ```
 
 ## Stream
+
+<Badge text="updated" type="warn"/>
 
 The Endpoint -> `/yts/stream/:imdbid`
 
@@ -279,27 +321,15 @@ Stream movie by its IMDB id
 
 - Queries
 
-| Query   | Type   | Required | Default | alias | Description                                                 | Example |
-| ------- | ------ | -------- | ------- | ----- | ----------------------------------------------------------- | ------- |
-| quality | Number | false    | 10      | q     | number represents the quality of the video in range [1, 10] | 8       |
-| size    | Number | false    | 0       | s     | number represents the size of the video in range [1, 10]    | 10      |
-
-> In ranges: 1 is the lowest and 10 is the greatest
-
-> Size default value is zero means ignored
-
-> If size has value then quality will be ignored
+| Query   | Type   | Required | Default | alias | Description                                | Example |
+| ------- | ------ | -------- | ------- | ----- | ------------------------------------------ | ------- |
+| quality | String | false    | best    | q     | the movie quality [720p, 1080p, 2160p, 3D] | 3D      |
+| type    | String | false    | bluray  | t     | the movie file type [bluray, web]          | bluray  |
 
 - Examples for **Shazam** movie
 
 <try endpoint="tt0448115" label="Movie IMDB Id:" :copyURL="false" :tryBtn="false"/>
 
-<try endpoint="/yts/stream/tt0448115" label="Movie highest quality"/>
-
-<try endpoint="/yts/stream/tt0448115?quality=1" label="Movie lowest quality"/>
-
-<try endpoint="/yts/stream/tt0448115?size=10" label="Movie largest size"/>
-
-<try endpoint="/yts/stream/tt0448115?size=1" label="Movie smallest size"/>
+<try endpoint="/yts/stream/tt0448115"/>
 
 Content-Type: `video/mp4`
