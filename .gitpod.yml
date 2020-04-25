@@ -1,5 +1,7 @@
 tasks:
   - init: npm install
-    command: npm run start
+    command: npm run dev
 image:
   file: .gitpod.Dockerfile
+ports:
+  - port: 3000
