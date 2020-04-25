@@ -62,7 +62,7 @@
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4",
     "webtorrent": "^0.107.17",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.1.1",
