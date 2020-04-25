@@ -8,6 +8,8 @@ This project is the backend server of [The Live Torrent](https://github.com/Dave
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Davenchy/live-torrent-backend)
 
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Davenchy/live-torrent-backend) 
+
 - [Documentations](https://github.com/Davenchy/live-torrent-backend/wiki)
 
 # Quick Guide
