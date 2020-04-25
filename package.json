@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server.js",
+    "build": "npm run docs:build",
     "dev": "NODE_ENV=development nodemon server.js",
     "test": "mocha --exit",
     "postinstall": "npm run docs:build",
