@@ -15,7 +15,7 @@ let isLoggedIn = null;
 // is logged in middleware
 app.use(
   (req, res, next) => {
-    if (isLoggedIn === null)
+    if (isLoggedIn === null) {
       api
         .login()
         .then(() => {
@@ -28,7 +28,7 @@ app.use(
           console.error(err);
           next();
         });
-    else next();
+    } else next();
   },
   (req, res, next) => {
     if (!isLoggedIn) res.status(500).send("OpenSubtitles.org Login Failed!");
@@ -37,14 +37,14 @@ app.use(
 );
 
 app.get("/search", (req, res) => {
-  const rq = req.query,
-    sublanguageid = rq.lang || rq.ln || "all",
-    query = rq.query || rq.q,
-    limit = rq.limit || rq.l || "best",
-    season = rq.season || rq.s,
-    episode = rq.episode || rq.e,
-    imdbid = rq.imdbid || rq.im,
-    fps = rq.fps || rq.f;
+  const rq = req.query;
+  const sublanguageid = rq.lang || rq.ln || "all";
+  const query = rq.query || rq.q;
+  const limit = rq.limit || rq.l || "best";
+  const season = rq.season || rq.s;
+  const episode = rq.episode || rq.e;
+  const imdbid = rq.imdbid || rq.im;
+  const fps = rq.fps || rq.f;
 
   api
     .search({
@@ -112,8 +112,9 @@ const processCaption = (req, res, next) => {
 
       // detect encoding
       if (!encoding) encoding = encodingDetector.detect(data).encoding;
-      if (!encoding)
+      if (!encoding) {
         return res.status(500).send("cannot detect caption encoding");
+      }
 
       // convert caption data encoding to UTF-8 if it is not
       if (encoding !== "UTF-8") {
@@ -166,22 +167,23 @@ app.get("/movie/:imdbid/langs", (req, res) => {
       limit: "best"
     })
     .then(data => {
-      const langs = Object.keys(data).map((a, i) => {
+      const langs = Object.keys(data).map(a => {
         const d = isoCodes.by639_1[a];
         const b = data[a];
 
-        if (d)
+        if (d) {
           return {
             name: d.name,
             code: d.iso639_1,
             iso: d.iso639_2B
           };
-        else
+        } else {
           return {
             name: b.lang,
             code: b.langcode,
             iso: b.langcode
           };
+        }
       });
       res.send(langs);
     });
