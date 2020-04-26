@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server.js",
+    "build": "npm run docs:build",
     "dev": "NODE_ENV=development nodemon server.js",
     "test": "mocha --exit",
     "postinstall": "npm run docs:build",
@@ -49,26 +50,26 @@
     "iso-language-codes": "^1.0.7",
     "jschardet": "^2.1.1",
     "mime": "^2.4.4",
-    "morgan": "^1.9.1",
+    "morgan": "^1.10.0",
     "opensubtitles-api": "^5.1.0",
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
     "signale": "^1.4.0",
     "srt-to-vtt": "^1.1.3",
     "tailwindcss": "^1.2.0",
-    "torrent-search-api": "^2.0.10",
+    "torrent-search-api": "^2.1.1",
     "update-notifier": "^4.1.0",
     "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4",
     "webtorrent": "^0.107.17",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
-    "@vue/component-compiler-utils": "^3.1.1",
+    "@vue/component-compiler-utils": "^3.1.2",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
@@ -79,7 +80,7 @@
     "nodemon": "^1.19.4",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
-    "rimraf": "^3.0.1",
+    "rimraf": "^3.0.2",
     "vue-template-compiler": "^2.6.11",
     "vuepress": "^1.4.0"
   }
