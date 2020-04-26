@@ -147,13 +147,13 @@ describe("YTS API", function() {
       })
       .end((err, res) => {
         isGoodResponse(err, res);
-        const body = res.body;
-        expect(body.status).eqls("ok");
-        expect(res.body.data.movies)
+        const data = res.body;
+        expect(data.movie_count).eqls(1);
+        expect(data.movies)
           .to.be.an("Array")
           .length(1);
 
-        movie = res.body.data.movies[0];
+        movie = data.movies[0];
         expect(movie.title).contains("Shazam");
         done();
       });
@@ -161,10 +161,9 @@ describe("YTS API", function() {
 
   it("get Shazam movie details", function(done) {
     if (!movie) this.skip();
-    agent.get(`/yts/movie/${movie.id}`).end((err, res) => {
+    agent.get(`/yts/movie/${movie.imdb_code}`).end((err, res) => {
       isGoodResponse(err, res);
-      const data = res.body.data.movie;
-      expect(res.body.status).eqls("ok");
+      const data = res.body;
       expect(data.title_long).eqls(movie.title_long);
       expect(data.id).eqls(movie.id);
       expect(data.imdb_code).eqls(movie.imdb_code);
@@ -174,18 +173,30 @@ describe("YTS API", function() {
 
   it("get movie suggestions", function(done) {
     if (!movie) this.skip();
-    agent.get(`/yts/movie/${movie.id}/suggestions`).end((err, res) => {
+    agent.get(`/yts/movie/${movie.imdb_code}/suggestions`).end((err, res) => {
       isGoodResponse(err, res);
-      expect(res.body.status).eqls("ok");
-      expect(res.body.data.movie_count).eqls(4);
+      expect(res.body)
+        .to.be.an("Array")
+        .of.length(4);
+      done();
+    });
+  });
+
+  it("get torrents and qualities", function(done) {
+    if (!movie) this.skip();
+    agent.get(`/yts/torrents/${movie.imdb_code}`).end((err, res) => {
+      isGoodResponse(err, res);
+      expect(res.body)
+        .to.be.an("Array")
+        .length.greaterThan(0);
       done();
     });
   });
 
   it("stream Shazam movie", function(done) {
+    if (!movie) this.skip();
     agent
       .get(`/yts/stream/${movie.imdb_code}`)
-      .query({ size: 1 })
       .buffer()
       .parse((res, cb) => {
         expect(res).status(200);
