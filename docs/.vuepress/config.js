@@ -3,6 +3,7 @@ const { version } = require("../../package.json");
 module.exports = {
   title: "Live Torrent Backend",
   description: "The backend project for the live-torrent project",
+  base: "/docs/",
   themeConfig: {
     version,
     liveServer:

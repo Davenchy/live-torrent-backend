@@ -21,6 +21,6 @@ This project is the backend for the [live torrent](https://github.com/Davenchy/l
 
 - Stream YTS movies and collect its details through The YTS api.
 
-[Get Start](/guide) Live torrent backend version: {{ $themeConfig.version }}
+[Get Start](guide) Live torrent backend version: {{ $themeConfig.version }}
 
-[![Support Brave Browser](/brave.png)](https://brave.com/liv557)
+[![Support Brave Browser](brave.png)](https://brave.com/liv557)

@@ -15,10 +15,11 @@ const { app } = servers;
  * setup live-torrent-backend core
  */
 function liveTorrentCore() {
-  app.use("/torrent", require("./routes"));
-  app.use(historyApi());
+  app.get("/", (req, res) => res.redirect("/docs"));
+  app.use(require("./routes"));
+  app.use("/docs", historyApi());
+  app.use("/docs", express.static(path.resolve("docs", ".vuepress", "dist")));
   app.use(require("./helpers/errors").handleErrors);
-  app.use(express.static(path.resolve("docs", ".vuepress", "dist")));
 }
 
 function main(logs = true) {
