@@ -59,9 +59,18 @@ class CaptionsService {
    * @return {Promise}
    */
   async login() {
-    await this.api.login();
-    this._isLoggedIn = true;
-    console.log("OpenSubtitles.org: LoggedIn!");
+    try {
+      await this.api.login();
+      this._isLoggedIn = true;
+      console.log("OpenSubtitles.org: LoggedIn!");
+    } catch (err) {
+      console.log("OpenSubtitles.org: Failed!");
+      throw new CustomError(
+        500,
+        err.message,
+        "OpenSubtitles Service Login Error"
+      );
+    }
   }
 
   /**
