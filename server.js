@@ -9,7 +9,7 @@ const os = require("os");
 const historyApi = require("connect-history-api-fallback");
 
 const servers = require("./create-server");
-const app = servers.app;
+const { app } = servers;
 
 /**
  * setup live-torrent-backend core

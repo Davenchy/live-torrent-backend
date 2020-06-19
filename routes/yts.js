@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const torrentsLib = require("../src/torrents");
+const torrentsLib = require("../services/torrents");
 const mime = require("mime");
 const service = require("../services/yts");
 const { CustomError } = require("../helpers/errors");
