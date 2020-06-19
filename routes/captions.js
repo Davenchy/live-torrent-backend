@@ -3,21 +3,15 @@ const service = require("../services/captions");
 const { CustomError } = require("../helpers/errors");
 
 // is logged in middleware
-app.use(
-  // @ts-ignore
-  async (req, res, next) => {
-    if (!service.isLoggedIn) await service.login();
-    next();
-  },
-  // @ts-ignore
-  (req, res, next) => {
-    if (!service.isLoggedIn)
-      throw new CustomError(500, "OpenSubtitles.org Login Failed!");
-    next();
-  }
-);
+app.use((req, res, next) => {
+  if (!service.isLoggedIn)
+    service
+      .login()
+      .then(() => next())
+      .catch(err => next(err));
+});
 
-app.get("/search", async (req, res) => {
+app.get("/search", (req, res, next) => {
   const rq = req.query;
   const sublanguageid = rq.lang || rq.ln || "all";
   const query = rq.query || rq.q;
@@ -27,25 +21,26 @@ app.get("/search", async (req, res) => {
   const imdbid = rq.imdbid || rq.im;
   const fps = rq.fps || rq.f;
 
-  const results = await service.search({
-    // @ts-ignore
-    sublanguageid,
-    // @ts-ignore
-    query,
-    // @ts-ignore
-    limit,
-    // @ts-ignore
-    season,
-    // @ts-ignore
-    episode,
-    // @ts-ignore
-    imdbid,
-    // @ts-ignore
-    fps,
-    extensions: ["srt", "vtt"]
-  });
-
-  res.send(results);
+  service
+    .search({
+      // @ts-ignore
+      sublanguageid,
+      // @ts-ignore
+      query,
+      // @ts-ignore
+      limit,
+      // @ts-ignore
+      season,
+      // @ts-ignore
+      episode,
+      // @ts-ignore
+      imdbid,
+      // @ts-ignore
+      fps,
+      extensions: ["srt", "vtt"]
+    })
+    .then(results => res.send(results))
+    .catch(err => next(err));
 });
 
 // load movie's data
@@ -63,19 +58,28 @@ const loadMovieData = (req, res, next) => {
 
 // find movie's caption
 // @ts-ignore
-const movieCaption = async (req, res, next) => {
+const movieCaption = (req, res, next) => {
   const { id, lang, fps } = req.movie;
-  const caption = await service.findMovieCaption(id, lang, fps);
-  req.movie.caption = caption;
-  next();
+  service
+    .findMovieCaption(id, lang, fps)
+    .then(caption => {
+      req.movie.caption = caption;
+      next();
+    })
+    .catch(err => next(err));
 };
 
 // download and process the caption
 // @ts-ignore
-const processCaption = async (req, res, next) => {
+const processCaption = (req, res, next) => {
   const movie = req.movie;
-  req.movie.caption = await service.downloadCaption(movie.caption, !!movie.srt);
-  next();
+  service
+    .downloadCaption(movie.caption, !!movie.srt)
+    .then(caption => {
+      req.movie.caption = caption;
+      next();
+    })
+    .catch(err => next(err));
 };
 
 // send caption
@@ -85,7 +89,6 @@ const sendCaptions = (req, res) => {
   res.setHeader("Content-Length", caption.data.length);
   res.setHeader("Content-Type", "text/vtt");
   req.connection.setTimeout(30000);
-  console.log("sending");
   res.send(caption.data);
 };
 
@@ -99,10 +102,11 @@ app.get(
 );
 
 // get all supported languages
-app.get("/movie/:imdbid/langs", async (req, res) => {
-  const id = req.params.imdbid;
-  const langs = await service.getSupportedLanguages(id);
-  res.send(langs);
-});
+app.get("/movie/:imdbid/langs", (req, res, next) =>
+  service
+    .getSupportedLanguages(req.params.imdbid)
+    .then(langs => res.send(langs))
+    .catch(err => next(err))
+);
 
 module.exports = app;
