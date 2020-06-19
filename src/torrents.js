@@ -1,9 +1,9 @@
-const WebTorrent = require("webtorrent");
-const pump = require("pump");
-const rangeParser = require("range-parser");
-const mime = require("mime");
-const client = new WebTorrent();
 const trackers = require("../utils/torrent-trackers");
+const rangeParser = require("range-parser");
+const WebTorrent = require("webtorrent");
+const mime = require("mime");
+const pump = require("pump");
+const client = new WebTorrent();
 
 /**
  * torrent file in form of json object
