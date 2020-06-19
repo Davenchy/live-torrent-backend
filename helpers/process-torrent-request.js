@@ -1,5 +1,5 @@
 const app = require("express")();
-const torrents = require("../lib/torrents");
+const torrents = require("../services/torrents");
 let useSelectors = true;
 
 // init
