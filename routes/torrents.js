@@ -1,6 +1,6 @@
 const app = require("express")();
-const torrents = require("../lib/torrents");
-const processReq = require("../utils/process-torrent-request");
+const torrents = require("../services/torrents");
+const processReq = require("../helpers/process-torrent-request");
 
 // routes //
 app.use("/info", processReq, info);
