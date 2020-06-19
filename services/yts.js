@@ -60,7 +60,7 @@ class YTSService {
    * @return {Promise}
    */
   async getMovie(id, details = false) {
-    const movies = await this.getMovies(id, 1);
+    const { movies } = await this.getMovies(id, 1);
     const movie = movies[0];
     if (!movie) throw new CustomError(404, "movie not found");
 
@@ -154,9 +154,7 @@ class YTSService {
     if (data.length === 0) throwError();
 
     // return the first torrent in the list should be the only remaining one
-    return {
-      torrent: data[0]
-    };
+    return data[0];
   }
 }
 
