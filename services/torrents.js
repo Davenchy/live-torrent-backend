@@ -1,4 +1,4 @@
-const trackers = require("../utils/torrent-trackers");
+const trackers = require("../helpers/torrent-trackers");
 const rangeParser = require("range-parser");
 const WebTorrent = require("webtorrent");
 const mime = require("mime");
