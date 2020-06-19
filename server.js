@@ -11,22 +11,22 @@ const historyApi = require("connect-history-api-fallback");
 const servers = require("./create-server");
 const app = servers.app;
 
-function main(disableMiddleWares = false, logs = true) {
-  // middle wares
-  if (!disableMiddleWares) {
-    app.use(cors());
-    if (logs) app.use(morgan("dev"));
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
-  }
-
-  // routes
-  app.use("/torrent", require("./routes/torrent"));
-  app.use("/search", require("./routes/search"));
-  app.use("/captions", require("./routes/captions"));
-  app.use("/yts", require("./routes/yts"));
+/**
+ * setup live-torrent-backend core
+ */
+function liveTorrentCore() {
+  app.use("/torrent", require("./routes"));
   app.use(historyApi());
+  app.use(require("./helpers/errors").handleErrors);
   app.use(express.static(path.resolve("docs", ".vuepress", "dist")));
+}
+
+function main(logs = true) {
+  if (logs) app.use(morgan("dev"));
+  app.use(cors());
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  liveTorrentCore();
 }
 
 // server listener
@@ -68,12 +68,13 @@ if (!module.parent) {
 } else {
   /**
    * live torrent backend express.js middle ware
-   * @param {boolean} [disableMiddleWares=false] - disable the default middle wares used by the backend
+   * @param {boolean} [coreOnly=false] - get the core only
    * @param {boolean} [logs=true] - show logs in the console
    * @return {object} express.js app object
    */
-  module.exports = (disableMiddleWares = false, logs = true) => {
-    main(!!disableMiddleWares, !!logs);
+  module.exports = (coreOnly = true, logs = true) => {
+    if (coreOnly) liveTorrentCore();
+    else main(logs);
     return servers;
   };
 }
