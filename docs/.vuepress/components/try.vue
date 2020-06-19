@@ -2,7 +2,7 @@
   <p>
     <span v-if="label">{{label}}</span>
     <code v-if="endpoint">{{endpoint}}</code>
-    <a target="_blank" rel="noopener noreferrer" :href="url" v-if="tryBtn">
+    <a target="_blank" rel="noopener noreferrer" :href="endpoint" v-if="tryBtn">
       {{ text }}
       <OutboundLink v-if="tryBtn" />
     </a>

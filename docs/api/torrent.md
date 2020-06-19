@@ -21,9 +21,6 @@ It based on [Webtorrent](https://github.com/webtorrent/webtorrent) project.
 
 3. add [selectors](#selectors)
 
-- Table of Contents
-  [[toc]]
-
 ## Methods
 
 Live torrent Torrent API supports 4 methods

@@ -6,8 +6,6 @@ module.exports = {
   base: "/docs/",
   themeConfig: {
     version,
-    liveServer:
-      process.env.LIVE_SERVER || "https://live-torrent-server.herokuapp.com",
     sidebar: [
       "/",
       "/guide.md",
