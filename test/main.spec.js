@@ -148,7 +148,8 @@ describe("YTS API", function() {
       .end((err, res) => {
         isGoodResponse(err, res);
         const data = res.body;
-        expect(data.movie_count).eqls(1);
+        expect(data.limit).eqls(1);
+        expect(data.page_number).eqls(1);
         expect(data.movies)
           .to.be.an("Array")
           .length(1);
