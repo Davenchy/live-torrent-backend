@@ -40,14 +40,18 @@ class SearchService {
       {
         query: "",
         category: "All",
-        limit: 10,
-        provider: []
+        limit: 10
       },
       options
     );
 
     // get results
-    let results = await tsapi.search(provider, query, category, limit);
+    let results = await tsapi.search.apply(tsapi, [
+      ...(provider ? [[provider]] : []),
+      query,
+      category,
+      limit
+    ]);
 
     // set the magnet and the hash for each element
     for (const index in results) {
