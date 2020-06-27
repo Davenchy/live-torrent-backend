@@ -19,7 +19,7 @@ const { CustomError } = require("../helpers/errors");
  */
 
 /**
- * @typedef {Object} Caption
+ * @typedef {Object} Subtitle
  * @prop {string} downloads
  * @prop {string} id
  * @prop {string} lang
@@ -40,7 +40,7 @@ const { CustomError } = require("../helpers/errors");
  * @prop {string} iso
  */
 
-class CaptionsService {
+class SubtitlesService {
   constructor(UserAgent) {
     this._isLoggedIn = false;
     this.api = new OSAPI(UserAgent);
@@ -70,7 +70,7 @@ class CaptionsService {
   }
 
   /**
-   * search for movie captions
+   * search for movie subtitles
    * @param {SearchOptions} options
    * @return {Promise}
    */
@@ -89,13 +89,13 @@ class CaptionsService {
   }
 
   /**
-   * find a caption for a movie
+   * find a subtitle for a movie
    * @param {string} id - movie imdbid
-   * @param {string} [lang] - movie's caption language
+   * @param {string} [lang] - movie's subtitle language
    * @param {string} [fps] - movie frames per second
-   * @return {Promise<Caption>}
+   * @return {Promise<Subtitle>}
    */
-  async findMovieCaption(id, lang, fps) {
+  async findMovieSubtitle(id, lang, fps) {
     const results = await this.search({
       sublanguageid: lang,
       imdbid: id,
@@ -105,54 +105,54 @@ class CaptionsService {
 
     try {
       const language = Object.values(results)[0];
-      const caption = language[0];
+      const subtitle = language[0];
 
-      const { format } = caption;
+      const { format } = subtitle;
       if (format !== "srt" && format !== "vtt")
-        throw { code: 404, message: "caption not found" };
+        throw { code: 404, message: "subtitle not found" };
 
-      return caption;
+      return subtitle;
     } catch (_) {
-      throw new CustomError(404, "caption not found");
+      throw new CustomError(404, "subtitle not found");
     }
   }
 
   /**
-   * download caption data
-   * @param {Caption} caption
+   * download subtitle data
+   * @param {Subtitle} subtitle
    * @param {boolean} [onlyVTT]
-   * @return {Promise<Caption>}
+   * @return {Promise<Subtitle>}
    */
-  async downloadCaption(caption, onlyVTT = true) {
-    // download caption content
-    const response = await axios.get(caption.utf8);
+  async downloadSubtitle(subtitle, onlyVTT = true) {
+    // download subtitle content
+    const response = await axios.get(subtitle.utf8);
     let file = response.data;
 
     // detect encoding
-    if (!caption.encoding) caption.encoding = detect(file).encoding;
-    if (!caption.encoding)
-      throw { code: 500, message: "cannot detect caption encoding" };
+    if (!subtitle.encoding) subtitle.encoding = detect(file).encoding;
+    if (!subtitle.encoding)
+      throw { code: 500, message: "cannot detect subtitle encoding" };
 
-    // fix caption encoding if needed
-    if (caption.encoding !== "UTF-8") {
-      const decodedData = decode(file, caption.encoding);
+    // fix subtitle encoding if needed
+    if (subtitle.encoding !== "UTF-8") {
+      const decodedData = decode(file, subtitle.encoding);
       file = encode(decodedData, "utf8").toString();
-      caption.encoding = "UTF-8";
+      subtitle.encoding = "UTF-8";
     }
 
     // convert srt to vtt if needed and return
-    if (onlyVTT && caption.format === "srt") {
+    if (onlyVTT && subtitle.format === "srt") {
       const stream = new Readable();
       stream._read = () => {};
       stream.push(file);
       stream.on("data", chunk => {
-        caption.data = chunk;
-        caption.format = "vtt";
-        caption.filename = caption.filename.replace(".srt", ".vtt");
-        return caption;
+        subtitle.data = chunk;
+        subtitle.format = "vtt";
+        subtitle.filename = subtitle.filename.replace(".srt", ".vtt");
+        return subtitle;
       });
       stream.pipe(srt2vtt());
-    } else return caption;
+    } else return subtitle;
   }
 
   /**
@@ -188,4 +188,4 @@ class CaptionsService {
   }
 }
 
-module.exports = new CaptionsService(process.env.OSUA || "TemporaryUserAgent");
+module.exports = new SubtitlesService(process.env.OSUA || "TemporaryUserAgent");

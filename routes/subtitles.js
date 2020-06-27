@@ -1,5 +1,5 @@
 const app = require("express")();
-const service = require("../services/captions");
+const service = require("../services/subtitles");
 const { CustomError } = require("../helpers/errors");
 
 // is logged in middleware
@@ -56,49 +56,50 @@ const loadMovieData = (req, res, next) => {
   next();
 };
 
-// find movie's caption
+// find movie's subtitle
 // @ts-ignore
-const movieCaption = (req, res, next) => {
+const movieSubtitle = (req, res, next) => {
   const { id, lang, fps } = req.movie;
   service
-    .findMovieCaption(id, lang, fps)
-    .then(caption => {
-      req.movie.caption = caption;
+    .findMovieSubtitle(id, lang, fps)
+    .then(subtitle => {
+      req.movie.subtitle = subtitle;
       next();
     })
     .catch(err => next(err));
 };
 
-// download and process the caption
+// download and process the subtitle
 // @ts-ignore
-const processCaption = (req, res, next) => {
+const processSubtitle = (req, res, next) => {
   const movie = req.movie;
   service
-    .downloadCaption(movie.caption, !!movie.srt)
-    .then(caption => {
-      req.movie.caption = caption;
+    .downloadSubtitle(movie.subtitle, !!movie.srt)
+    .then(subtitle => {
+      req.movie.subtitle = subtitle;
       next();
     })
     .catch(err => next(err));
 };
 
-// send caption
-const sendCaptions = (req, res) => {
-  const { caption } = req.movie;
-  res.attachment(caption.filename);
-  res.setHeader("Content-Length", caption.data.length);
+// send subtitle
+const sendSubtitles = (req, res) => {
+  const { subtitle } = req.movie;
+  console.log(subtitle);
+  res.attachment(subtitle.filename);
+  res.setHeader("Content-Length", subtitle.data.length);
   res.setHeader("Content-Type", "text/vtt");
   req.connection.setTimeout(30000);
-  res.send(caption.data);
+  res.send(subtitle.data);
 };
 
-// get movie caption
+// get movie subtitle
 app.get(
   "/movie/:imdbid",
   loadMovieData,
-  movieCaption,
-  processCaption,
-  sendCaptions
+  movieSubtitle,
+  processSubtitle,
+  sendSubtitles
 );
 
 // get all supported languages
