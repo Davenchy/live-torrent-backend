@@ -144,7 +144,7 @@ class SubtitlesService {
     if (onlyVTT && subtitle.format === "srt") {
       const stream = new Readable();
       stream._read = () => {};
-      stream.push(file);
+      stream.push(subtitle.data);
       stream.on("data", chunk => {
         subtitle.data = chunk;
         subtitle.format = "vtt";
@@ -152,7 +152,10 @@ class SubtitlesService {
         return subtitle;
       });
       stream.pipe(srt2vtt());
-    } else return subtitle;
+    } else {
+      subtitle.data = file;
+      return subtitle;
+    }
   }
 
   /**
