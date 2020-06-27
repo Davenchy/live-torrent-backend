@@ -323,7 +323,7 @@ Stream movie by its IMDB id
 
 - Examples for **Shazam** movie
 
-<try endpoint="tt0448115" label="Movie IMDB Id:" :copyURL="false" :tryBtn="false"/>
+<try endpoint="tt0448115" label="Movie IMDB Id:" :copyBtn="false" :tryBtn="false"/>
 
 <try endpoint="/yts/stream/tt0448115"/>
 

@@ -1,40 +1,31 @@
 <template>
   <p>
-    <span v-if="label">{{label}}</span>
-    <code v-if="endpoint">{{endpoint}}</code>
+    <span v-if="label">{{ label }}</span>
+    <code>{{ endpoint }}</code>
     <a target="_blank" rel="noopener noreferrer" :href="endpoint" v-if="tryBtn">
-      {{ text }}
-      <OutboundLink v-if="tryBtn" />
+      Try
+      <OutboundLink />
     </a>
-    <a @click="copyToClipboard(endpoint)" v-if="copyEndpoint" class="copy1">Copy</a>
-    <a @click="copyToClipboard(url)" v-if="copyURL" class="copy">Copy URL</a>
+    <a @click="copyToClipboard(endpoint)" v-if="copyBtn" class="copy">Copy</a>
   </p>
 </template>
 
 <script>
 export default {
   props: {
-    endpoint: {
-      type: String,
-      default: ""
-    },
-    text: {
-      type: String,
-      default: "Try-It"
-    },
     label: {
       type: String,
       default: ""
+    },
+    endpoint: {
+      type: String,
+      required: true
     },
     tryBtn: {
       type: Boolean,
       default: true
     },
-    copyEndpoint: {
-      type: Boolean,
-      default: true
-    },
-    copyURL: {
+    copyBtn: {
       type: Boolean,
       default: true
     }
@@ -51,13 +42,6 @@ export default {
       el.select();
       document.execCommand("copy");
       document.body.removeChild(el);
-    }
-  },
-  computed: {
-    url() {
-      const { $themeConfig: config, endpoint } = this;
-      const { liveServer: server } = config;
-      return server + endpoint;
     }
   }
 };

@@ -2,7 +2,7 @@
 
 use **The Torrent API** to load torrent information, serve torrent file, get a **.m3u** playlist of a torrent file or get a torrent file from its hash
 
-The Endpoint -> <try endpoint="/torrent" :tryBtn="false" :copyURL="false"/>
+The Endpoint -> <try endpoint="/torrent" :tryBtn="false" :copyBtn="false"/>
 
 The HTTP Method always **GET**
 
@@ -124,9 +124,9 @@ OR
 
 ## Real Examples
 
-torrent info hash: <try endpoint="08ada5a7a6183aae1e09d831df6748d566095a10" :copyURL="false" :tryBtn="false"/>
+torrent info hash: <try endpoint="08ada5a7a6183aae1e09d831df6748d566095a10" :copyBtn="false" :tryBtn="false"/>
 
-torrent id: <try endpoint="magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel" :copyURL="false" :tryBtn="false"/>
+torrent id: <try endpoint="magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel" :copyBtn="false" :tryBtn="false"/>
 
 > both gives the same results
 

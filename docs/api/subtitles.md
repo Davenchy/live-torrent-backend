@@ -11,7 +11,7 @@ It based on [OpenSubtitles.org](https://www.opensubtitles.org) project.
 
 ## Search
 
-<try label="The Endpoint:" endpoint="/subtitles/search" :tryBtn="false" :copyURL="false"/>
+<try label="The Endpoint:" endpoint="/subtitles/search" :tryBtn="false" :copyBtn="false"/>
 
 - Parameters
 
@@ -61,7 +61,7 @@ You will need to assign an OpenSubtitles user agent to the env variable **OSUA**
 
 ## Movie
 
-<try label="The Endpoint:" endpoint="/subtitles/movie/:imdbid" :tryBtn="false" :copyURL="false"/>
+<try label="The Endpoint:" endpoint="/subtitles/movie/:imdbid" :tryBtn="false" :copyBtn="false"/>
 
 Get subtitle for a movie by its IMDBID in vtt format
 
@@ -79,7 +79,7 @@ The result type can be `application/x-subrip` for `.srt` files or `text/vtt` for
 
 ## Languages
 
-<try label="The Endpoint:" endpoint="/subtitles/movie/:imdbid/langs" :tryBtn="false" :copyURL="false"/>
+<try label="The Endpoint:" endpoint="/subtitles/movie/:imdbid/langs" :tryBtn="false" :copyBtn="false"/>
 
 Get all exist subtitle languages of a movie by its IMDBID
 
