@@ -13,7 +13,8 @@ module.exports = {
         title: "APIs",
         collapsable: false,
         children: [
-          "/api/torrent",
+          "/api/errors.md",
+          "/api/torrent.md",
           "/api/captions.md",
           "/api/search.md",
           "/api/yts.md"
