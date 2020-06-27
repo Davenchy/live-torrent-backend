@@ -17,7 +17,7 @@ This project is the backend for the [live torrent](https://github.com/Davenchy/l
 
 - Search, explore, serve and download torrent files online.
 
-- Find captions.
+- Find subtitles.
 
 - Stream YTS movies and collect its details through The YTS api.
 

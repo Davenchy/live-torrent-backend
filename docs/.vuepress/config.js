@@ -15,7 +15,7 @@ module.exports = {
         children: [
           "/api/errors.md",
           "/api/torrent.md",
-          "/api/captions.md",
+          "/api/subtitles.md",
           "/api/search.md",
           "/api/yts.md"
         ]
