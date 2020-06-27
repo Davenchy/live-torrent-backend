@@ -15,13 +15,8 @@
   "env": {
     "OSUA": {
       "description": "OpenSubtitles User Agent [without it no subtitles support]",
-      "required": false,
+      "required": true,
       "value": "TemporaryUserAgent"
-    },
-    "LIVE_SERVER": {
-      "description": "Docs try button live server url",
-      "required": false,
-      "value": "https://live-torrent-server.herokuapp.com"
     },
     "SERVER_KEY": {
       "description": "server ssl protocol private key file content",
