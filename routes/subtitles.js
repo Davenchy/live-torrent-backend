@@ -51,7 +51,7 @@ const loadMovieData = (req, res, next) => {
     id: p.imdbid,
     lang: q.lang || q.l || "eng",
     fps: q.fps || q.f,
-    srt: q.allow_srt || q.s
+    format: q.format || q.ft || "vtt"
   };
   next();
 };
@@ -74,7 +74,7 @@ const movieSubtitle = (req, res, next) => {
 const processSubtitle = (req, res, next) => {
   const movie = req.movie;
   service
-    .downloadSubtitle(movie.subtitle, !!movie.srt)
+    .downloadSubtitle(movie.subtitle, movie.format === "vtt")
     .then(subtitle => {
       req.movie.subtitle = subtitle;
       next();

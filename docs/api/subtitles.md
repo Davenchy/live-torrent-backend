@@ -17,13 +17,13 @@ It based on [OpenSubtitles.org](https://www.opensubtitles.org) project.
 
 | Parameter | Type          | Required | Default | alias | Description                              | Example   |
 | --------- | ------------- | -------- | ------- | ----- | ---------------------------------------- | --------- |
-| query     | String        | true       |         | q     | keyword to be used in the search process | shazam    |
-| lang      | String        | false    | all     | ln    | subtitles language id                  | ara       |
+| query     | String        | true     |         | q     | keyword to be used in the search process | shazam    |
+| lang      | String        | false    | all     | ln    | subtitles language id                    | ara       |
 | limit     | String/Number | false    | best    | l     | limit results for quality or number      | best      |
-| imdbid    | String/Number | true       |         | im    | find subtitles with movie's IMDBID        | tt0448115 |
+| imdbid    | String/Number | true     |         | im    | find subtitles with movie's IMDBID       | tt0448115 |
 | fps       | String        | false    |         | f     | number of frames per sec in the video    | 23.96     |
-| season    | Number        | false    |         | s     | find subtitles for series's season        | 2         |
-| episode   | Number        | false    |         | e     | find subtitles for series's episode       | 3         |
+| season    | Number        | false    |         | s     | find subtitles for series's season       | 2         |
+| episode   | Number        | false    |         | e     | find subtitles for series's episode      | 3         |
 
 > Required one of two parameters 'query' or 'imdbid'
 
@@ -69,11 +69,11 @@ Get subtitle for a movie by its IMDBID in vtt format
 
 - Parameters
 
-| Parameter | Type    | Required | Default | alias | Description                                        | Example |
-| --------- | ------- | -------- | ------- | ----- | -------------------------------------------------- | ------- |
-| lang      | String  | false    | eng     | l     | subtitles language id                            | ara     |
-| fps       | String  | false    |         | f     | number of frames per sec in the video              | 23.96   |
-| allow_srt | Boolean | false    | false   | s     | if subtitle format srt then don't convert it to vtt | true    |
+| Parameter | Type   | Required | Default | alias | Description                           | Example |
+| --------- | ------ | -------- | ------- | ----- | ------------------------------------- | ------- |
+| lang      | String | false    | eng     | l     | subtitles language id                 | ara     |
+| fps       | String | false    |         | f     | number of frames per sec in the video | 23.96   |
+| format    | string | false    | vtt     | ft    | subtitle format [vtt or srt]          | srt     |
 
 The result type can be `application/x-subrip` for `.srt` files or `text/vtt` for `.vtt` files
 

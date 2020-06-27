@@ -6,6 +6,7 @@ const srt2vtt = require("srt-to-vtt");
 const isoCodes = require("iso-language-codes");
 const { Readable } = require("stream");
 const { CustomError } = require("../helpers/errors");
+const { doesNotThrow } = require("assert");
 
 /**
  * @typedef {Object} SearchOptions
@@ -140,22 +141,25 @@ class SubtitlesService {
       subtitle.encoding = "UTF-8";
     }
 
-    // convert srt to vtt if needed and return
+    // convert srt to vtt if needed
     if (onlyVTT && subtitle.format === "srt") {
+      file = await this.convertSRTToVTT(file);
+      subtitle.format = "vtt";
+      subtitle.filename = subtitle.filename.replace(".srt", ".vtt");
+    }
+
+    subtitle.data = file;
+    return subtitle;
+  }
+
+  convertSRTToVTT(file) {
+    return new Promise(done => {
       const stream = new Readable();
       stream._read = () => {};
-      stream.push(subtitle.data);
-      stream.on("data", chunk => {
-        subtitle.data = chunk;
-        subtitle.format = "vtt";
-        subtitle.filename = subtitle.filename.replace(".srt", ".vtt");
-        return subtitle;
-      });
+      stream.push(file);
+      stream.on("data", chunk => done(chunk));
       stream.pipe(srt2vtt());
-    } else {
-      subtitle.data = file;
-      return subtitle;
-    }
+    });
   }
 
   /**
