@@ -87,7 +87,7 @@ const sendSubtitles = (req, res) => {
   const { subtitle } = req.movie;
   res.attachment(subtitle.filename);
   res.setHeader("Content-Length", subtitle.data.length);
-  res.setHeader("Content-Type", "text/vtt");
+  res.setHeader("Content-Type", "text/vtt; charset=UTF-8");
   req.connection.setTimeout(30000);
   res.send(subtitle.data);
 };
