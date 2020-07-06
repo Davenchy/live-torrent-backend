@@ -1,12 +1,12 @@
 {
   "name": "live-torrent-backend",
-  "version": "1.6.1-1",
+  "version": "1.6.1-2",
   "description": "the backend server for the live-torrent project",
-  "main": "server.js",
+  "main": "main.js",
   "scripts": {
-    "start": "NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production node .",
     "build": "npm run docs:build",
-    "dev": "NODE_ENV=development nodemon server.js",
+    "dev": "NODE_ENV=development nodemon .",
     "test": "mocha ./test --exit --recursive",
     "postinstall": "npm run build",
     "docs:build": "vuepress build docs",
@@ -26,9 +26,9 @@
     "stream"
   ],
   "bin": {
-    "live-torrent-server": "bin/live-torrent-server.js",
-    "live-torrent-backend": "bin/live-torrent-server.js",
-    "live-torrent": "bin/live-torrent-server.js"
+    "live-torrent-server": "main.js",
+    "live-torrent-backend": "main.js",
+    "live-torrent": "main.js"
   },
   "bugs": {
     "url": "https://github.com/Davenchy/live-torrent-backend/issues"
@@ -54,7 +54,6 @@
     "opensubtitles-api": "^5.1.1",
     "pump": "^3.0.0",
     "range-parser": "^1.2.1",
-    "signale": "^1.4.0",
     "srt-to-vtt": "^1.1.3",
     "srt2vtt": "^1.3.1",
     "ssl-validator": "^1.0.6",
