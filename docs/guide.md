@@ -7,14 +7,15 @@ How to use Live Torrent Backend
 
 ## Environment Variables
 
-| Var         | Default            | Desc                             |
-| ----------- | ------------------ | -------------------------------- |
-| PORT        | 3000               | http server port                 |
-| SSL_PORT    | 443                | ssl server port                  |
-| SERVER_KEY  |                    | your ssl private key or its path |
-| SERVER_CERT |                    | your ssl certificate or its path |
-| OSUA        | TemporaryUserAgent | Opensubtitles.org User Agent     |
-| CLUSTERS    | number of cpu cors | run the server in multi threads  |
+| Var      | Type    | Default            | Desc                             |
+| -------- | ------- | ------------------ | -------------------------------- |
+| PORT     | number  | 3000               | http server port                 |
+| SSL      | boolean | false              | enable ssl                       |
+| SSL_PORT | number  | 443                | ssl server port                  |
+| KEY      | string  |                    | your ssl private key or its path |
+| CERT     | string  |                    | your ssl certificate or its path |
+| OSUA     | string  | TemporaryUserAgent | Opensubtitles.org User Agent     |
+| CLUSTERS | number  | number of cpu cors | run the server in multi threads  |
 
 for more information about the OpenSubtitles.org api user agent from [here](https://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst)
 
@@ -47,9 +48,10 @@ npm start
 
 - how to run
 
-`live-torrent [--port 8080] [--ssl-port 443] [--clusters 1] [--full-core-clusters false] [--key] [--cert]`
+`live-torrent run [--port 8080] [--ssl-port 443] [--clusters 1] [--ssl --key --cert] [--OSUA]`
 
 > Note: to terminate clusters kill the main process
+> Coming soon: CLI Docs
 
 ## Docker
 
@@ -80,18 +82,13 @@ lets say that `/host/path/to/sslcert` is the path to your certification files
 
 ## SSL Protocol
 
-To support The SSL Protocol
+To enable ssl you need to generate SSL Certification files
 
-Create new directory and call it `sslcert` then generate your credentials in it.
+Create new directory `e.g.: sslcert` then change path to it `cd sslcert`
 
-name the private key file by `server.key`
-
-name the certificate file by `servert.crt`
-
-**OR** use env vars
-
-set the env vars as [here](#environment-variables) to files content or files path
-
-- To generate SSL Certification files
-
-`openssl req -new -x509 -nodes --keyout server.key -out server.crt`
+```bash
+openssl genrsa -out key.pem
+openssl req -new -key key.pem -out csr.pem
+openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
+rm csr.pem
+```

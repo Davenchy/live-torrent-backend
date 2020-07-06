@@ -1,9 +1,17 @@
 #!/usr/bin/env node
 
+// load environment variables from .env
+// require("dotenv").config();
+
 // @ts-ignore
 if (!module.parent)
-  global["argv"] = require("yargs")
+  require("yargs")
     .env()
+    .option("OSUA", {
+      desc: "OpenSubtitles User Agent",
+      type: "string",
+      default: "TemporaryUserAgent"
+    })
     .commandDir("./cli")
     .demandCommand()
     .help().argv;

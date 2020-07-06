@@ -1,6 +1,5 @@
 const { cpus } = require("os");
 const { readFileSync: read, existsSync: exists } = require("fs");
-const { runServer } = require("../lib/server-tools");
 const cluster = require("cluster");
 const chalk = require("chalk");
 
@@ -50,9 +49,14 @@ module.exports = {
     // auto enable ssl if requirements are valid
     if (argv.cert && argv.key) argv.ssl = true;
 
+    // set important env vars
+    ["OSUA"].forEach(
+      k => (process.env[k] = process.env[k] ? process.env[k] : argv[k])
+    );
+
     // support clusters
     if (cluster.isMaster) {
-      for (let i = 0; i < argv.clusters; i++) cluster.fork();
+      for (let i = 0; i < argv.clusters; i++) cluster.fork({ argv });
 
       // restart cluster if crashed
       cluster.on("exit", (worker, code) => {
@@ -61,7 +65,7 @@ module.exports = {
             chalk`worker {green ${worker.id}} on process {blue ${worker.process.pid}} {red crashed}.`
           );
           console.log("Starting a new worker...");
-          cluster.fork();
+          cluster.fork({ argv });
         } else {
           console.log(
             chalk`Worker {green ${worker.id}} on process {blue ${worker.process.pid}} is {red offline}`
@@ -94,6 +98,8 @@ module.exports = {
 
       console.log("");
     } else {
+      const app = require("../lib/server");
+      const { runServer } = require("../lib/server-tools");
       const { cert, key, ssl, port, sslPort } = argv;
       const certificates = {
         cert,
@@ -102,6 +108,7 @@ module.exports = {
 
       // create server
       const { httpServer, httpsServer } = await runServer({
+        app,
         certificates: ssl ? certificates : undefined,
         port,
         sslPort,

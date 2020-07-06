@@ -17,7 +17,7 @@
 
 - By using the search endpoint it is required to provide a search query
 
-<try endpoint="http://localhost:3000/search"/>
+<try endpoint="/search"/>
 
 ```json
 {
