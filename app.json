@@ -27,7 +27,8 @@
       "description": "server ssl protocol certificate file content",
       "required": false,
       "value": ""
-    }
+    },
+    "NPM_CONFIG_PRODUCTION": false
   },
   "image": "davenchy/live-torrent-backend",
   "success_url": "/"
