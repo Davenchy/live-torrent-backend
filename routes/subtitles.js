@@ -1,6 +1,5 @@
 const app = require("express")();
 const service = require("../services/subtitles");
-const { CustomError } = require("../helpers/errors");
 
 // is logged in middleware
 app.use((req, res, next) => {
@@ -51,7 +50,8 @@ const loadMovieData = (req, res, next) => {
     id: p.imdbid,
     lang: q.lang || q.l || "eng",
     fps: q.fps || q.f,
-    format: q.format || q.ft || "vtt"
+    format: q.format || q.ft || "vtt",
+    encoding: q.encoding || q.e
   };
   next();
 };
@@ -70,7 +70,6 @@ const movieSubtitle = (req, res, next) => {
 };
 
 // download and process the subtitle
-// @ts-ignore
 const processSubtitle = (req, res, next) => {
   const movie = req.movie;
   service
@@ -82,13 +81,30 @@ const processSubtitle = (req, res, next) => {
     .catch(err => next(err));
 };
 
+// change subtitle encoding
+const encodeSubtitle = (req, res, next) => {
+  const { encoding, subtitle } = req.movie;
+  if (!encoding) return next();
+  service
+    .changeSubtitleEncoding(subtitle.data, subtitle.encoding, encoding)
+    .then(file => {
+      req.movie.subtitle.data = file;
+      req.movie.subtitle.encoding = encoding;
+      next();
+    })
+    .catch(err => next(err));
+};
+
 // send subtitle
 const sendSubtitles = (req, res) => {
   const { subtitle } = req.movie;
   res.attachment(subtitle.filename);
   res.setHeader("Content-Length", subtitle.data.length);
-  res.setHeader("Content-Type", "text/vtt; charset=UTF-8");
-  req.connection.setTimeout(30000);
+  res.setHeader(
+    "Content-Type",
+    `text/${subtitle.format}; charset=${subtitle.encoding}`
+  );
+  req.connection.setTimeout(10000);
   res.send(subtitle.data);
 };
 
@@ -98,6 +114,7 @@ app.get(
   loadMovieData,
   movieSubtitle,
   processSubtitle,
+  encodeSubtitle,
   sendSubtitles
 );
 

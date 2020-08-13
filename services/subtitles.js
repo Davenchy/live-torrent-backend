@@ -1,12 +1,12 @@
 const OSAPI = require("opensubtitles-api");
 const axios = require("axios").default;
 const { detect } = require("jschardet");
-const { decode, encode } = require("iconv-lite");
+const { decode, encode, encodingExists } = require("iconv-lite");
+// const srt2vtt = require("srt2vtt");
 const srt2vtt = require("srt-to-vtt");
-const isoCodes = require("iso-language-codes");
 const { Readable } = require("stream");
+const isoCodes = require("iso-language-codes");
 const { CustomError } = require("../helpers/errors");
-const { doesNotThrow } = require("assert");
 
 /**
  * @typedef {Object} SearchOptions
@@ -129,35 +129,74 @@ class SubtitlesService {
     const response = await axios.get(subtitle.utf8);
     let file = response.data;
 
-    // detect encoding
-    if (!subtitle.encoding) subtitle.encoding = detect(file).encoding;
-    if (!subtitle.encoding)
-      throw { code: 500, message: "cannot detect subtitle encoding" };
-
-    // fix subtitle encoding if needed
-    if (subtitle.encoding !== "UTF-8") {
-      const decodedData = decode(file, subtitle.encoding);
-      file = encode(decodedData, "utf8").toString();
-      subtitle.encoding = "UTF-8";
-    }
-
     // convert srt to vtt if needed
     if (onlyVTT && subtitle.format === "srt") {
-      file = await this.convertSRTToVTT(file);
+      file = await this.convertSRT2VTT(file);
       subtitle.format = "vtt";
       subtitle.filename = subtitle.filename.replace(".srt", ".vtt");
     }
 
+    subtitle.encoding = "UTF-8";
     subtitle.data = file;
     return subtitle;
   }
 
-  convertSRTToVTT(file) {
-    return new Promise(done => {
-      const stream = new Readable();
-      stream._read = () => {};
-      stream.push(file);
-      stream.on("data", chunk => done(chunk));
+  /**
+   * change subtitle file encoding to a new one
+   * @param {Buffer} subtitleFile
+   * @param {string} encoding
+   * @return {Promise<Buffer>}
+   */
+  async changeSubtitleEncoding(subtitleFile, encoding) {
+    // check if the new encoding is supported
+    if (!encodingExists(encoding))
+      throw new CustomError(
+        400,
+        "encoding is not supported",
+        "Converting Subtitle Encoding",
+        { encoding: encoding }
+      );
+
+    // detect current encoding
+    const currentEncoding = detect(subtitleFile).encoding;
+    if (!currentEncoding)
+      throw new CustomError(
+        500,
+        "can not detect current subtitle file encoding",
+        "Converting Subtitle Encoding"
+      );
+
+    // check if file current encoding is supported
+    if (!encodingExists(currentEncoding))
+      throw new CustomError(
+        500,
+        "current subtitle encoding is not supported",
+        "Converting Subtitle Encoding",
+        { encoding: currentEncoding }
+      );
+
+    // decode and encode with the new encoding
+    const decodedData = decode(subtitleFile, currentEncoding);
+    let buff = encode(decodedData, encoding);
+    return buff;
+  }
+
+  /**
+   * convert srt subtitle to vtt subtitle
+   * @param {Buffer|String} file
+   * @return {Promise<Buffer|String>}
+   */
+  convertSRT2VTT(file) {
+    return new Promise((resolve, reject) => {
+      let vtt = "";
+      const stream = new Readable({
+        read() {
+          this.push(file);
+        }
+      });
+      stream.on("data", chunk => (vtt += chunk));
+      stream.on("end", () => resolve(vtt));
+      stream.on("error", err => reject(err));
       stream.pipe(srt2vtt());
     });
   }

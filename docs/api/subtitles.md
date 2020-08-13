@@ -69,11 +69,12 @@ Get subtitle for a movie by its IMDBID in vtt format
 
 - Parameters
 
-| Parameter | Type   | Required | Default | alias | Description                           | Example |
-| --------- | ------ | -------- | ------- | ----- | ------------------------------------- | ------- |
-| lang      | String | false    | eng     | l     | subtitles language id                 | ara     |
-| fps       | String | false    |         | f     | number of frames per sec in the video | 23.96   |
-| format    | string | false    | vtt     | ft    | subtitle format [vtt or srt]          | srt     |
+| Parameter | Type   | Required | Default                      | alias | Description                              | Example |
+| --------- | ------ | -------- | ---------------------------- | ----- | ---------------------------------------- | ------- |
+| lang      | String | false    | eng                          | l     | subtitles language id                    | ara     |
+| fps       | String | false    |                              | f     | number of frames per sec in the video    | 23.96   |
+| format    | string | false    | vtt                          | ft    | subtitle format [vtt or srt]             | srt     |
+| encoding  | string | false    | opensubtitle's default utf-8 | e     | encode subtitle file with a new encoding | UTF-8   |
 
 The result type can be `application/x-subrip` for `.srt` files or `text/vtt` for `.vtt` files
 
