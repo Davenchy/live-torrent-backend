@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node .",
     "build": "npm run docs:build",
     "dev": "NODE_ENV=development nodemon .",
-    "test": "mocha ./test --exit --recursive",
+    "test": "echo no tests",
     "postinstall": "npm run build",
     "docs:build": "vuepress build docs",
     "docs:dev": "vuepress dev docs"
