@@ -15,5 +15,6 @@ RUN npm install
 
 EXPOSE 8080
 EXPOSE 443
-ENTRYPOINT [ "./bin/live-torrent-server.js" ]
-CMD ["--port 8080", " --full-core-clusters"]
+
+CMD chmod +x main.js
+ENTRYPOINT [ "./main.js", "--port 8080"]
