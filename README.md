@@ -1,47 +1,42 @@
-[![Build Status](https://travis-ci.org/Davenchy/live-torrent-backend.svg?branch=master)](https://travis-ci.org/Davenchy/live-torrent-backend) ![npm](https://img.shields.io/npm/v/live-torrent-backend?color=red) [![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Flive-torrent-server.herokuapp.com)](https://live-torrent-server.herokuapp.com)
+[![Build Status](https://travis-ci.org/Davenchy/live-torrent-backend.svg?branch=master)](https://travis-ci.org/Davenchy/live-torrent-backend) [![npm](https://img.shields.io/npm/v/live-torrent-backend?color=red)](https://npmjs.com/package/live-torrent-backend) [![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Flive-torrent-server.herokuapp.com)](https://live-torrent-server.herokuapp.com)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/fadi_davenchy?style=social)](https://twitter.com/fadi_davenchy?ref_src=twsrc%5Etfw)
 
 # live-torrent-backend
 
-This project is the backend server of [The Live Torrent](https://github.com/Davenchy/live-torrent) project.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Davenchy/live-torrent-backend)
+Back end server for [Live Torrent](https://github.com/Davenchy/live-torrent).
 
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Davenchy/live-torrent-backend) 
 
-- [Documentations](https://github.com/Davenchy/live-torrent-backend/wiki)
-
 # Quick Guide
 
-- You can host on Heroku using Heroku Deploy Button
+## Deploy to Heroku
 
-- Or cloning and run locally
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Davenchy/live-torrent-backend)
 
-```bash
-# clone repo
-git clone https://github.com/Davenchy/live-torrent-backend.git
-
-# open the project directory
-cd live-torrent-backend
-
-# install dependencies
-npm install
-
-# run the server
-npm start
-```
-
-- Install as a global package using npm
+## CLI tool
 
 ```bash
 npm install -g live-torrent-backend
+live-torrent --help
 ```
 
-- Docker Container
+## Docker
 
-Docker Repo: `davenchy/live-torrent-backend`
+- Docker Repo: `davenchy/live-torrent-backend`
 
----
+## Build
 
-For more details check the documentation
+```bash
+git clone https://github.com/Davenchy/live-torrent-backend.git
+
+cd live-torrent-backend
+
+npm install
+
+npm start
+```
+
+use the command `npm start -- --help` for help
+
+- for more information about the OpenSubtitles user agent from [here](https://trac.opensubtitles.org/projects/opensubtitles/wiki/DevReadFirst).
