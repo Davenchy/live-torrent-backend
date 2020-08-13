@@ -1,6 +1,6 @@
 {
   "name": "Live Torrent Server",
-  "description": "Backend server for The Live Torrent project",
+  "description": "Backend server for Live Torrent project",
   "repository": "https://github.com/Davenchy/live-torrent-backend",
   "logo": "https://github.com/Davenchy/live-torrent/raw/master/public/img/logo.png",
   "keywords": [
@@ -14,9 +14,9 @@
   ],
   "env": {
     "OSUA": {
-      "description": "OpenSubtitles User Agent [without it no subtitles support]",
+      "description": "OpenSubtitles User Agent [without it no subtitles support][for more info visit Davenchy/live-torrent-backend on Github]",
       "required": true,
-      "value": "TemporaryUserAgent"
+      "value": ""
     },
     "SERVER_KEY": {
       "description": "server ssl protocol private key file content",
@@ -30,8 +30,5 @@
     }
   },
   "image": "davenchy/live-torrent-backend",
-  "success_url": "/",
-  "scripts": {
-    "postdeploy": "npm run build"
-  }
+  "success_url": "/"
 }
