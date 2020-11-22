@@ -8,10 +8,6 @@ Back end server for [Live Torrent](https://github.com/Davenchy/live-torrent).
 
 [Documentation](https://live-torrent-server.herokuapp.com)
 
-## Deploy to Heroku
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Davenchy/live-torrent-backend)
-
 ## CLI tool
 
 ```bash
