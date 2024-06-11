@@ -5,6 +5,8 @@
 
 Back end server for [Live Torrent](https://github.com/Davenchy/live-torrent).
 
+![Live Torrent Logo](logo.png)
+
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Davenchy/live-torrent-backend) 
 
 
