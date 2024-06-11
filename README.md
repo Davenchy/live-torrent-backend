@@ -1,6 +1,7 @@
 # LiveTorrentBackend
 
-[![Build Status](https://travis-ci.org/Davenchy/live-torrent-backend.svg?branch=master)](https://travis-ci.org/Davenchy/live-torrent-backend) [![npm](https://img.shields.io/npm/v/live-torrent-backend?color=red)](https://npmjs.com/package/live-torrent-backend) [![Website](https://img.shields.io/website?down_color=red&down_message=offline&up_color=green&up_message=online&url=https%3A%2F%2Flive-torrent-server.herokuapp.com)](https://live-torrent-server.herokuapp.com) [![Twitter Follow](https://img.shields.io/twitter/follow/fadi_davenchy?style=social)](https://twitter.com/fadi_davenchy?ref_src=twsrc%5Etfw)
+[![Build Status](https://travis-ci.org/Davenchy/live-torrent-backend.svg?branch=master)](https://travis-ci.org/Davenchy/live-torrent-backend)
+[![Twitter Follow](https://img.shields.io/twitter/follow/fadi_davenchy?style=social)](https://twitter.com/fadi_davenchy?ref_src=twsrc%5Etfw)
 
 Back end server for [Live Torrent](https://github.com/Davenchy/live-torrent).
 
