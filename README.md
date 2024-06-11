@@ -7,12 +7,17 @@ Back end server for [Live Torrent](https://github.com/Davenchy/live-torrent).
 
 ![Live Torrent Logo](logo.png)
 
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Davenchy/live-torrent-backend) 
-
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Davenchy/live-torrent-backend)
 
 ## Docker
 
 - Docker Image: `davenchy/live-torrent-backend:latest`
+
+```sh
+docker run -d -p 3000:3000 -v $(pwd)/downloads:/app/downloads davenchy/live-torrent-backend:latest
+```
+
+- Set a volume to `/app/downloads` so you could control the downloaded files.
 
 ## Install
 
