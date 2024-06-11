@@ -3,13 +3,13 @@ import { serve } from '@hono/node-server'
 import { swaggerUI } from '@hono/swagger-ui'
 import { HTTPExceptionErrorHandler } from 'src/utils/errors'
 
-import API from 'src/api'
+import routes from 'routes/index'
 
 const app = new Hono()
 
-app.route('/api', API)
+app.route('/', routes)
 app.get('/ping', c => c.text('pong'))
-app.get('/', swaggerUI({ url: '/docs' }))
+app.get('/docs', swaggerUI({ url: '/docs' }))
 
 app.onError(HTTPExceptionErrorHandler)
 
