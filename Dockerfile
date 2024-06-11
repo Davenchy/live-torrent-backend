@@ -1,20 +1,15 @@
-FROM node:12
+FROM node:18-alpine
 
 LABEL maintainer "Davenchy <firon1222@gmail.com>"
-LABEL description "Build Live-Torrent-Backend server image"
+LABEL description "Live-Torrent-Backend server image"
 
-RUN mkdir /app
 WORKDIR /app
 
-ENV PORT 8080
-ENV OSUA TemporaryUserAgent
-
 COPY package*.json ./
-COPY . ./
 RUN npm install
 
-EXPOSE 8080
-EXPOSE 443
+COPY . ./
 
-CMD chmod +x main.js
-ENTRYPOINT [ "./main.js", "--port 8080"]
+EXPOSE 3000
+
+ENTRYPOINT ["npm", "start"]
