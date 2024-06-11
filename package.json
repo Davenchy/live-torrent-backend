@@ -1,16 +1,22 @@
 {
   "name": "live-torrent-backend",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "description": "the backend server for the live-torrent project",
-  "main": "main.js",
+  "main": "./src/index.ts",
+  "type": "module",
   "scripts": {
-    "start": "NODE_ENV=production node .",
-    "build": "npm run docs:build",
-    "dev": "NODE_ENV=development nodemon .",
-    "test": "echo no tests",
-    "postinstall": "npm run build",
-    "docs:build": "vuepress build docs",
-    "docs:dev": "vuepress dev docs"
+    "start": "tsx ./src",
+    "dev": "tsx watch ./src",
+    "test": "mocha 'test/**/*.spec.ts' --exit"
+  },
+  "exports": {
+    "require": "tsx/cjs",
+    "import": "tsx/esm"
+  },
+  "mocha": {
+    "node-option": [
+      "import=tsx"
+    ]
   },
   "repository": {
     "type": "git",
@@ -18,71 +24,52 @@
   },
   "keywords": [
     "backend",
-    "express",
+    "hono",
     "live-torrent",
     "torrent",
     "webtorrent",
     "server",
     "stream"
   ],
-  "bin": {
-    "live-torrent-server": "main.js",
-    "live-torrent-backend": "main.js",
-    "live-torrent": "main.js"
-  },
   "bugs": {
     "url": "https://github.com/Davenchy/live-torrent-backend/issues"
   },
   "author": "Davenchy",
   "license": "MIT",
   "dependencies": {
-    "@types/mocha": "^5.2.7",
-    "axios": "^0.19.2",
-    "body-parser": "^1.19.0",
-    "chalk": "^3.0.0",
-    "connect-history-api-fallback": "^1.6.0",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "fluent-ffmpeg": "^2.1.2",
-    "get-port": "^5.1.1",
-    "iconv-lite": "^0.5.2",
-    "iso-language-codes": "^1.0.7",
-    "jschardet": "^2.2.1",
-    "mime": "^2.4.6",
-    "morgan": "^1.10.0",
+    "@hono/node-server": "^1.11.2",
+    "@hono/swagger-ui": "^0.2.2",
+    "dotenv": "^16.4.5",
+    "fuzzy-search": "^3.2.1",
+    "hono": "^4.4.4",
+    "iconv-lite": "^0.6.3",
+    "iso-language-codes": "^2.0.0",
+    "jschardet": "^3.1.2",
+    "mime": "^4.0.3",
     "opensubtitles-api": "^5.1.2",
-    "pump": "^3.0.0",
     "range-parser": "^1.2.1",
-    "request": "^2.88.2",
     "srt-to-vtt": "^1.1.3",
     "srt2vtt": "^1.3.1",
-    "ssl-validator": "^1.0.6",
-    "torrent-search-api": "^2.1.3",
-    "update-notifier": "^4.1.0",
-    "vue": "^2.6.11",
-    "vue-hot-reload-api": "^2.3.4",
-    "webtorrent": "^0.107.17",
-    "yargs": "^15.4.1"
+    "ssl-validator": "^4.0.0",
+    "torrent-search-api": "^2.1.4",
+    "webtorrent": "^2.4.0"
   },
   "devDependencies": {
-    "@vue/component-compiler-utils": "^3.2.0",
-    "chai": "^4.2.0",
-    "chai-http": "^4.3.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^6.2.3",
-    "nodemon": "^2.0.4",
-    "parcel-bundler": "^1.12.4",
-    "prettier": "^1.19.1",
-    "rimraf": "^3.0.2",
-    "vue-template-compiler": "^2.6.11",
-    "vuepress": "^1.5.3"
+    "@eslint/js": "^8.56.0",
+    "@types/chai": "^4.3.16",
+    "@types/fuzzy-search": "^2.1.5",
+    "@types/mime": "^4.0.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.14.2",
+    "@types/range-parser": "^1.2.7",
+    "@types/torrent-search-api": "^2.0.3",
+    "@types/webtorrent": "^0.109.8",
+    "chai": "^5.1.1",
+    "eslint": "^8.56.0",
+    "globals": "^15.4.0",
+    "mocha": "^10.4.0",
+    "prettier": "^3.3.1",
+    "tsx": "^4.15.1",
+    "typescript-eslint": "^7.12.0"
   }
 }
