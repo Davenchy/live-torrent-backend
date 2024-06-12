@@ -1,0 +1,596 @@
+openapi: 3.1.0
+info:
+  title: LiveTorrentBackend'
+  version: 2.0.0
+  contact:
+    name: Davenchy
+    url: https://github.com/Davenchy
+    email: firon1222@gmail.com
+  license:
+    name: MIT
+    url: https://raw.githubusercontent.com/Davenchy/live-torrent-backend/master/LICENSE
+tags:
+  - name: Search
+    description: The torrent content search API
+  - name: Torrent
+    description: Access torrent content.
+components:
+  examples:
+    SintelTorrentId:
+      summary: Sintel Torrent Id
+      description: The torrent info hash of the Sintel movie.
+      value: 08ada5a7a6183aae1e09d831df6748d566095a10
+    TorrentMeta:
+      summary: Torrent Meta
+      description: Sintel Torrent Meta File
+      value:
+        name: Sintel
+        length: 129302391
+        progress: 1
+        speed: 25192
+        downloaded: 129302391
+        eta: 0
+        completed: true
+        peers: 7
+        ratio: 0.025976500476341695
+        files:
+          - index: 0
+            name: Sintel.de.srt
+            length: 1652
+            path: Sintel/Sintel.de.srt
+            progress: 1
+            downloaded: 165
+          - index: 1
+            name: Sintel.en.srt
+            length: 1514
+            path: Sintel/Sintel.en.srt
+            progress: 0.296
+            downloaded: 448
+          - ...
+    TorrentFile:
+      summary: Torrent File
+      description: Sintel.en.srt File
+      value:
+        index: 1
+        name: Sintel.en.srt
+        length: 1514
+        path: Sintel/Sintel.en.srt
+        progress: 0.296
+        downloaded: 448
+    TorrentResult:
+      summary: Torrent Search Result
+      value:
+        title: "Spider-Man: No Way Home 720p"
+        time: "2022-03-11 16:14:44"
+        size: "1.33 GB"
+        description: "https://yts.mx/movies/spider-man-no-way-home-2021"
+        provider: Yts
+        peers: 19
+        seeds: 100
+        link: "https://yts.mx/torrent/download/4AC05990388D6C9654255011FC29D389AC67EC95"
+        magnet: "magnet:?xt=urn:btih:B54741D8982F1AC9E4C1EA645EA41E4F5E75862B&dn=Spider-Man%3A+No+Way+Home+%282021%29+%5B3D%5D+%5BYTS.MX%5D&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.tracker.cl%3A1337%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Fipv4.tracker.harry.lu%3A80%2Fannounce&tr=https%3A%2F%2Fopentracker.i2p.rocks%3A443%2Fannounce"
+    InvalidTorrentIdError:
+      summary: Invalid/Missing TorrentId
+      description: TorrentId is missing or invalid, use hash param and id query to set a valid one.
+      value:
+        code: 1
+        error: Required valid id query or hash param
+    NoFileSelectionError:
+      summary: A selected file is required
+      description: |
+        To achive this request you have to select a single file, use **i** to select file by index or **q** to select a file using a fuzzy-finding query.
+      value:
+        code: 2
+        error: File selection is required, use query q or i to select one.
+    FileNotFoundError:
+      summary: File Not Found
+      description: The requested file is not found.
+      value:
+        code: 0
+        error: File Not Found!
+    RequiredSearchQueryError:
+      summary: Search Query Missing
+      description: The **q** query is missing.
+      value:
+        code: 4
+        error: query is required!
+    UnsupportedProviderError:
+      summary: Unsupported Provider
+      description: You are using an unsupported provider
+      value:
+        code: 5
+        error: Unsupported ThePiratePay provider
+  parameters:
+    TorrentId:
+      name: id
+      in: query
+      description: The torrentId/infoHash of the torrent file
+      required: true
+      schema:
+        type: string
+      examples:
+        Default:
+          $ref: '#/components/examples/SintelTorrentId'
+    TorrentInfoHash:
+      name: hash
+      in: path
+      required: true
+      description: The infoHash of the torrent file
+      schema:
+        type: string
+      examples:
+        Default:
+          $ref: '#/components/examples/SintelTorrentId'
+    PickFileQuery:
+      name: q
+      in: query
+      description: Use to fuzzy-find a file/s and select.
+      schema:
+        type: string
+      examples:
+        Videos:
+          summary: "Pick all .mp4 video files"
+          value: '*.mp4'
+        Subtitles:
+          summary: "Pick all .srt subtitle files"
+          value: '*.srt'
+        Empty:
+          summary: Pick nothing
+          value: ''
+    PickFileIndex:
+      name: i
+      in: query
+      description: Use file index to pick
+      schema:
+        type: array
+        items:
+          type: number
+      examples:
+        ManyFiles:
+          summary: "Pick indexes 0, 1, 2, and 3"
+          value: 0,1,2,3
+        SingleFile:
+          summary: "Pick the 3rd file"
+          value: 2
+        Image:
+          summary: "Pick the 10th file, The image"
+          value: 10
+  responses:
+    TorrentMeta:
+        description: OK
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TorrentMeta'
+            examples:
+              Default:
+                $ref: '#/components/examples/TorrentMeta'
+    TorrentMetaError:
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            InvalidTorrentId:
+              $ref: '#/components/examples/InvalidTorrentIdError'
+            NoFileSelection:
+              $ref: '#/components/examples/NoFileSelectionError'
+    FileServeOK:
+      description: OK
+      content:
+        application/octet-stream:
+          schema:
+            type: string
+            format: binary
+          example:
+            Served File Content!
+    FileServeError:
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 2
+            error: "File selection is required, use query: q or i to select one."
+    FileServeNotFoundError:
+      description: File Not Found Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 0
+            error: "File Not Found!"
+  schemas:
+    SearchProvider:
+      description: A torrent search engine that provides torrent magnets.
+      type: object
+      required:
+        - name
+        - categories
+      properties:
+        name:
+          type: string
+          description: The provider name
+        categories:
+          type: array
+          items:
+            type: string
+          description: The supported categories by the provider
+      examples:
+        - name: Yts
+          categories:
+            - All
+            - Movies
+    TorrentMeta:
+      description: Torrent meta data object
+      type: object
+      required:
+        - name
+        - lenth
+        - progress
+        - speed
+        - downloaded
+        - eta
+        - completed
+        - peers
+        - ratio
+        - files
+      properties:
+        name:
+          description: The torrent file name
+          type: string
+        length:
+          description: The total length in bytes
+          type: number
+        comment:
+          description: The torrent file comment
+          type: string
+        progress:
+          description: The download progress, between 0.0 and 1.0
+          type: number
+          format: float
+        speed:
+          description: The download speed in bytes/second
+          type: number
+          format: float
+        downloaded:
+          description: The downloaded bytes
+          type: number
+        eta:
+          description: ETA in seconds
+          type: number
+        completed:
+          description: Is download completed
+          type: boolean
+        peers:
+          description: Number of connected peers
+          type: number
+        ratio:
+          description: The client's share ratio, Uploads/Downloads. Higher is better.
+          type: number
+          format: float
+        created:
+          description: The date of torrent file creation
+          type: number
+          format: int64
+        createdBy:
+          description: The creator name
+          type: string
+        files:
+          description: A list of content file for this torrent.
+          type: array
+          items:
+            $ref: '#/components/schemas/TorrentFile'
+      examples:
+        - $ref: '#/components/examples/TorrentMeta'
+    TorrentFile:
+      type: object
+      description: A torrent content file
+      required: [index, name, length, path, progress, downloaded]
+      properties:
+        index:
+          type: number
+          description: The file index or ID
+        name:
+          type: string
+          description: The file name
+        length:
+          type: number
+          description: File size in bytes
+        path:
+          type: string
+          description: The file path
+        progress:
+          type: number
+          format: float
+          description: The download progress, from 0.0 to 1.0
+        downloaded:
+          type: number
+          description: Downloaded bytes
+      examples:
+        - $ref: '#/components/examples/TorrentFile'
+    TorrentResult:
+      type: object
+      required: [title, size, magnet, provider]
+      properties:
+        title:
+          type: string
+          description: The torrent file title
+        time:
+          type: string
+          description: Torrent creation time
+        size:
+          type: string
+          description: Total torrent size
+        magnet:
+          type: string
+          description: The magnet uri of the torrent file.
+        description:
+          type: string
+          description: The torrent file description
+        provider:
+          type: string
+          description: The provider name
+        seeds:
+          type: number
+          description: number of seeders
+        peers:
+          type: number
+          description: number of leechers
+        link:
+          type: string
+          description: The link of the torrent on the provider site
+    Error:
+      type: object
+      required: [status, statusCode, message]
+      properties:
+        code:
+          type: number
+          description: An error code/id.
+        error:
+          type: string
+          description: The error message.
+paths:
+  /ping:
+    get:
+      summary: Check Server State
+      description: Check if server is running
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+              example:
+                pong
+  /search:
+    get:
+      summary: Get all supported providers.
+      description: |
+        Get a list with all supported providers
+      tags: [Search]
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchProvider'
+              example:
+                - ...
+                - name: Yts
+                  categories: ['All', 'Movies']
+                - ...
+  /search/{provider}:
+    get:
+      summary: Get providers list
+      description: Get torrent provider names and supported categories for each.
+      tags: [Search]
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+          examples:
+            YTS:
+              summary: YTS
+              value: Yts
+            P1337x:
+              summary: 1337x
+              value: 1337x
+            EZTV:
+              summary: Eztv
+              value: Eztv
+            KT:
+              summary: KickassTorrents
+              value: KickassTorrents
+            RBG:
+              summary: Rarbg
+              value: Rarbg
+            TPB:
+              summary: ThePirateBay
+              value: ThePirateBay
+        - in: query
+          name: q
+          description: The search query
+          required: true
+          schema:
+            type: string
+          example:
+            spider
+        - in: query
+          name: c
+          description: |
+            The search query.
+            
+            Use the endpoint `/search` to get a list of providers and the supported categories for each
+          schema:
+            type: string
+          example:
+            Movies
+        - in: query
+          name: l
+          description: The maximum number of results to return.
+          schema:
+            type: number
+            minimum: 1
+          example:
+            1
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TorrentResult'
+              examples:
+                Default:
+                  $ref: '#/components/examples/TorrentResult'
+        400:
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                code: 4
+                error: query is required!
+  /torrent:
+    get:
+      tags: [Torrent]
+      summary: Get torrent meta info
+      parameters:
+        - $ref: '#/components/parameters/TorrentId'
+      responses:
+        200:
+          $ref: '#/components/responses/TorrentMeta'
+        400:
+          $ref: '#/components/responses/TorrentMetaError'
+  /torrent/meta/{hash}:
+    get:
+      tags: [Torrent]
+      summary: Get torrent meta info by hash
+      parameters:
+        - $ref: '#/components/parameters/TorrentInfoHash'
+      responses:
+        200:
+          $ref: '#/components/responses/TorrentMeta'
+        400:
+          $ref: '#/components/responses/TorrentMetaError'
+  /torrent/serve:
+    get:
+      tags: [Torrent]
+      summary: Serve file
+      description: You could use **q** or **i** to only select one file.
+      parameters:
+        - $ref: '#/components/parameters/TorrentId'
+        - $ref: '#/components/parameters/PickFileQuery'
+        - $ref: '#/components/parameters/PickFileIndex'
+      responses:
+        200:
+          $ref: '#/components/responses/FileServeOK'
+        400:
+          $ref: '#/components/responses/FileServeError'
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
+    head:
+      tags: [Torrent]
+      summary: Check headers before download
+      description: You could use **q** or **i** to only select one file.
+      parameters:
+        - $ref: '#/components/parameters/TorrentId'
+        - $ref: '#/components/parameters/PickFileQuery'
+        - $ref: '#/components/parameters/PickFileIndex'
+      responses:
+        200:
+          description: OK
+        400:
+          $ref: '#/components/responses/FileServeError'
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
+  /torrent/serve/{hash}:
+    get:
+      summary: Serve file using infoHash
+      description: You could use **q** or **i** to only select one file.
+      tags: [Torrent]
+      parameters:
+        - $ref: '#/components/parameters/TorrentInfoHash'
+        - $ref: '#/components/parameters/PickFileQuery'
+        - $ref: '#/components/parameters/PickFileIndex'
+      responses:
+        200:
+          $ref: '#/components/responses/FileServeOK'
+        400:
+          $ref: '#/components/responses/FileServeError'
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
+    head:
+      summary: Check headers before download
+      description: You could use **q** or **i** to only select one file.
+      tags: [Torrent]
+      parameters:
+        - $ref: '#/components/parameters/TorrentInfoHash'
+        - $ref: '#/components/parameters/PickFileQuery'
+        - $ref: '#/components/parameters/PickFileIndex'
+      responses:
+        200:
+          description: OK
+        400:
+          $ref: '#/components/responses/FileServeError'
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
+  /torrent/live/{hash}/*:
+    get:
+      summary: Live serve torrent file
+      tags: [Torrent]
+      parameters:
+        - $ref: '#/components/parameters/TorrentInfoHash'
+        - in: path
+          name: filepath
+          required: true
+          schema:
+            type: string
+          examples:
+            ServeSubtitle:
+              summary: Serve English Subtitle File
+              value: 'Sintel/Sintel.en.srt'
+            ServeImage:
+              summary: Serve Image File
+              value: 'Sintel/poster.jpg'
+            ServeVideo:
+              summary: Serve Video File
+              value: 'Sintel/Sintel.mp4'
+      responses:
+        200:
+          $ref: '#/components/responses/FileServeOK'
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
+    head:
+      summary: Check headers before serve
+      tags: [Torrent]
+      parameters:
+        - $ref: '#/components/parameters/TorrentInfoHash'
+      responses:
+        200:
+          description: OK
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
+  /torrent/live/{hash}/Sintel/poster.jpg:
+    get:
+      summary: Serve image file
+      description: Try to serve the image from `/torrent/serve/{hash}/*`
+      tags: [Torrent]
+      parameters:
+        - $ref: '#/components/parameters/TorrentInfoHash'
+      responses:
+        200:
+          $ref: '#/components/responses/FileServeOK'
+        404:
+          $ref: '#/components/responses/FileServeNotFoundError'
