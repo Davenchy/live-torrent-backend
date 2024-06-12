@@ -1,22 +1,16 @@
 import TorrentSearchAPI, { type Torrent } from 'torrent-search-api'
 
-export type ProviderName =
-  | '1337x'
-  | 'Eztv'
-  | 'Yts'
-  | 'Rarbg'
-  | 'Limetorrents'
-  | 'ThePirateBay'
-  | 'KickassTorrents'
-
-export interface SearchOptions {
-  query: string
-  provider?: ProviderName | ProviderName[]
-  category?: string
-  limit?: number
+export interface TorrentResult {
+  title: string
+  time?: string
+  size: string
+  magnet: string
+  description?: string
+  provider: string
+  seeds?: number
+  peers?: number
+  link?: string
 }
-
-export type TorrentResult = Torrent | { magnet: string }
 
 TorrentSearchAPI.enablePublicProviders()
 TorrentSearchAPI.disableProvider('Torrent9')
@@ -35,9 +29,7 @@ export const getProviders = () =>
 /**
  * Maps a torrent search engine results into results with magnet URIs.
  */
-export const loadMagnets = async (
-  torrents: Torrent[],
-): Promise<TorrentResult[]> => {
+export const loadMagnets = async (torrents: Torrent[]): Promise<Torrent[]> => {
   const loadMagnet = async (torrent: Torrent) => {
     const magnet: string = await TorrentSearchAPI.getMagnet(torrent)
     return { ...torrent, magnet }
@@ -46,37 +38,27 @@ export const loadMagnets = async (
   return Promise.all(torrents.map(loadMagnet))
 }
 
-/**
- * Search for `query` using a torrent search `provider` engine.
- *
- * You could limit the results with `category` and `limit`.
- *
- * Defaults:
- * `query` is required!.
- * `provider` if not providers passed then all providers are selected by default.
- * `category` is `'All'` by default.
- * `limit` is 10 `by` default.
- */
-export const search = async (
-  options: string | SearchOptions,
-): Promise<TorrentResult[]> => {
-  const defaults = {
-    query: '',
-    provider: getProviders().map(p => p.name),
-    category: 'All',
-    limit: 10,
-  }
+const formatTorrentResult = async (
+  torrents: Torrent[],
+): Promise<TorrentResult[]> =>
+  torrents.map(t => ({
+    title: t.title,
+    time: t.time,
+    size: t.size,
+    description: t.desc,
+    provider: t.provider,
+    peers: (t as TorrentResult).peers,
+    seeds: (t as TorrentResult).seeds,
+    link: (t as TorrentResult).link,
+    magnet: t.magnet,
+  }))
 
-  const { query, provider, category, limit } = Object.assign(
-    defaults,
-    typeof options === 'string' ? { query: options } : options,
-  )
-
-  const torrents = await TorrentSearchAPI.search(
-    Array.isArray(provider) ? provider : [provider],
-    query,
-    category,
-    limit,
-  )
-  return loadMagnets(torrents)
-}
+export const search = (
+  query: string,
+  provider: string,
+  category: string,
+  limit: number,
+) =>
+  TorrentSearchAPI.search([provider], query, category, limit)
+    .then(loadMagnets)
+    .then(formatTorrentResult)

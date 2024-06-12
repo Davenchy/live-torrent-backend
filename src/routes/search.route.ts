@@ -7,7 +7,7 @@ import {
 
 const route = new Hono()
 
-route.get('/', searchController)
-route.get('/providers', getProvidersController)
+route.get('/', getProvidersController)
+route.get('/:provider', searchController)
 
 export default route
