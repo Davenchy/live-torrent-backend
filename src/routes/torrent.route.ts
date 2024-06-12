@@ -14,15 +14,10 @@ import {
 const route = new Hono()
 
 route.get('/', torrentIdMiddleware, metaRoute)
-route.get('/:infoHash', torrentIdMiddleware, metaRoute)
+route.get('/meta/:hash', torrentIdMiddleware, metaRoute)
 
 route.get('/files', torrentIdMiddleware, pickFileMiddleware(), infoRoute)
-route.get(
-  '/:infoHash/files',
-  torrentIdMiddleware,
-  pickFileMiddleware(),
-  infoRoute,
-)
+route.get('/files/:hash', torrentIdMiddleware, pickFileMiddleware(), infoRoute)
 
 route.on(
   ['HEAD', 'GET'],
@@ -35,7 +30,7 @@ route.on(
 )
 route.on(
   ['GET', 'HEAD'],
-  '/:infoHash/serve',
+  '/serve/:hash',
   torrentIdMiddleware,
   pickFileMiddleware('SINGLE'),
   setFileInfoMiddleware,
@@ -44,9 +39,9 @@ route.on(
 )
 route.on(
   ['GET', 'HEAD'],
-  '/:infoHash/serve/*',
+  '/live/:hash/*',
   torrentIdMiddleware,
-  resolvePathMiddleware('/serve/'),
+  resolvePathMiddleware,
   setFileInfoMiddleware,
   parseRangesMiddleware,
   serveRoute,

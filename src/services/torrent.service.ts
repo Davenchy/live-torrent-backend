@@ -13,9 +13,8 @@ export interface TFile {
 
 export interface TorrentInfo {
   name: string
-  path: string
   length: number
-  comment: string
+  comment?: string
   progress: number
   speed: number
   downloaded: number
@@ -23,6 +22,8 @@ export interface TorrentInfo {
   completed: boolean
   peers: number
   ratio: number
+  created?: Date
+  createdBy?: string
   files: TFile[]
 }
 
@@ -70,7 +71,6 @@ export const formatTorrentFiles = (files: TorrentFile[]): TFile[] => {
 
 export const formatTorrent = (torrent: Torrent): TorrentInfo => ({
   name: torrent.name,
-  path: torrent.path,
   length: torrent.length,
   comment: torrent.comment,
   progress: torrent.progress,
@@ -80,5 +80,7 @@ export const formatTorrent = (torrent: Torrent): TorrentInfo => ({
   completed: torrent.done,
   peers: torrent.numPeers,
   ratio: torrent.ratio,
+  created: torrent.created,
+  createdBy: torrent.createdBy,
   files: formatTorrentFiles(torrent.files),
 })

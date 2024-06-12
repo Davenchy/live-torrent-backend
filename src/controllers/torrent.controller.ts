@@ -9,7 +9,11 @@ import {
   formatTorrentFiles,
   requestTorrent,
 } from 'services/torrent.service'
-import { HTTPException } from 'src/utils/errors'
+import {
+  FileNotFoundError,
+  NoSelectionError,
+  TorrentInvalidError,
+} from 'src/utils/errors'
 import type { FlattenType } from 'src/utils/general'
 import { concat, firstAvailable, flatten } from 'src/utils/general'
 import { nodeStreamConvertor } from 'src/utils/streams'
@@ -19,41 +23,22 @@ export type SelectionMode = 'SINGLE' | 'MULTIPLE'
 
 /**
  * This middleware will check if the torrentId or infoHash is provided.
- * If torrentId found, it will try to get the torrent object, and set
- *
- * following keys into the context:
- *
+ * If torrentId found, it will try to get the torrent object, and sets
+ * the following keys:
  *    torrentId? - the actual torrentId value.
- *
  *    torrent? - the torrent object from webtorrent related to the torrentId.
  *
- *
  *  Example Routes:
- *
- *  METHOD /:infoHash/...
- *
- *  METHOD /...?infoHash=...
- *
- *  METHOD /...?torrentId=...
- *
- *  METHOD /...?id=...
- *
- *  METHOD /...?hash=...
+ *    METHOD /:hash/...
+ *    METHOD /...?id=...
  */
 export const torrentIdMiddleware = async (c: Context, next: Next) => {
-  const torrentId = firstAvailable<string>(
-    [
-      ...['torrentId', 'infoHash', 'id', 'hash'].map(v => c.req.query(v)),
-      c.req.param('infoHash'),
-    ],
-    '',
+  const torrentId = firstAvailable<string | undefined>(
+    [c.req.query('id'), c.req.param('hash')],
+    undefined,
   )
 
-  if (!torrentId)
-    throw new HTTPException(
-      400,
-      'torrentId or infoHash query/param is required',
-    )
+  if (!torrentId) throw TorrentInvalidError()
 
   try {
     const torrent = await requestTorrent(torrentId)
@@ -61,7 +46,7 @@ export const torrentIdMiddleware = async (c: Context, next: Next) => {
     c.set('torrentId', torrentId)
     c.set('torrent', torrent)
   } catch (err) {
-    throw new HTTPException(400, 'Invalid TorrentId', err as Error)
+    throw TorrentInvalidError(err as Error)
   }
 
   next()
@@ -110,7 +95,7 @@ export const pickFileMiddleware =
   (selectionMode: SelectionMode = 'MULTIPLE') =>
   (c: Context, next: Next) => {
     const torrent: Torrent = c.get('torrent')
-    if (!torrent) throw new HTTPException(400, 'No torrent found')
+    if (!torrent) throw TorrentInvalidError()
 
     const queries: string[] = flatten([c.req.queries('q')])
     const indexes: number[] = flatten<string>([
@@ -134,7 +119,7 @@ export const pickFileMiddleware =
       selections = torrent.files
 
     if (selectionMode === 'SINGLE' && selections.length === 0)
-      throw new HTTPException(400, 'No any file selected')
+      throw NoSelectionError()
 
     c.set(
       'selections',
@@ -143,7 +128,7 @@ export const pickFileMiddleware =
         : selections,
     )
 
-    if (selectionMode === 'SINGLE' && selections.length > 1) {
+    if (selectionMode === 'SINGLE' && selections.length >= 1) {
       c.set('file-path', selections[0].path)
       c.set('file-serve', selections[0])
     }
@@ -155,10 +140,7 @@ export const infoRoute = (c: Context) => {
   const selections: TorrentFile[] | undefined = c.get('selections')
 
   if (selections === undefined)
-    throw new HTTPException(
-      500,
-      'No selections found, use pickFileMiddleware first!',
-    )
+    throw new Error('No selections found, use pickFileMiddleware first!')
   return c.json(formatTorrentFiles(selections))
 }
 
@@ -167,7 +149,8 @@ export const infoRoute = (c: Context) => {
  */
 export const metaRoute = (c: Context) => {
   const torrent: Torrent = c.get('torrent')
-  if (!torrent) throw new HTTPException(400, 'No torrent found')
+  if (!torrent)
+    throw new Error('torrent is not set, use torrentIdMiddleware first!')
   return c.json(formatTorrent(torrent))
 }
 
@@ -180,35 +163,33 @@ export const metaRoute = (c: Context) => {
  * After parsing the path and assigns it to the key `file-path`, then will
  * search for a torrent file at that path then assigns it to `file-serve` key.
  */
-export const resolvePathMiddleware =
-  (separator: string) => (c: Context, next: Next) => {
-    const fullPath = c.req.path
-    const separatorIndex = fullPath.indexOf(separator)
+export const resolvePathMiddleware = (c: Context, next: Next) => {
+  const hash = c.req.param('hash')
+  const { routePath, path: fullPath } = c.req
 
-    // check if separator exists in the path
-    if (separatorIndex === -1)
-      throw new HTTPException(
-        500,
-        `Invalid path separator, can not separate: ${separator}`,
-      )
+  // check if separator exists in the path
+  if (!hash) throw new Error(`Invalid hash: ${hash}`)
 
-    // get the actual path
-    const path = fullPath.substring(separatorIndex + separator.length)
-    c.set('file-path', path)
+  // get the actual path
+  let path = routePath.replace(':hash', hash)
+  path = path.substring(0, path.length - 1)
+  path = fullPath.replace(path, '')
+  c.set('file-path', path)
 
-    // get the torrent object
-    const torrent: Torrent | undefined = c.get('torrent')
-    if (!torrent) throw new HTTPException(500, 'No torrent found')
+  // get the torrent object
+  const torrent: Torrent | undefined = c.get('torrent')
+  if (!torrent)
+    throw new Error('torrent is not set, use torrentIdMiddleware first!')
 
-    // search for the file
-    const result = torrent.files.find(f => f.path === path)
-    if (!result) throw new HTTPException(404, `File not found at ${path}`)
+  // search for the file
+  const result = torrent.files.find(f => f.path === path)
+  if (!result) throw FileNotFoundError()
 
-    // set the search result
-    c.set('file-serve', result)
+  // set the search result
+  c.set('file-serve', result)
 
-    next()
-  }
+  next()
+}
 
 /**
  * Reads the key `file-serve` set by `resolvePathMiddleware`
@@ -219,7 +200,10 @@ export const setFileInfoMiddleware = (c: Context, next: Next) => {
   const file = c.get('file-serve')
 
   // make sure that the file is exists
-  if (!file) throw new HTTPException(404, 'File not found')
+  if (!file)
+    throw new Error(
+      'file-serve is not set, use resolvePathMiddleware or pickFileMiddleware first!',
+    )
 
   // set content-type header
   c.res.headers.set(
@@ -243,7 +227,10 @@ export const parseRangesMiddleware = (c: Context, next: Next) => {
   // get the file to serve
   const file = c.get('file-serve')
   // make sure that the file is exists
-  if (!file) throw new HTTPException(404, 'File not found')
+  if (!file)
+    throw new Error(
+      'file-serve is not set, use resolvePathMiddleware or pickFileMiddleware first!',
+    )
 
   // `rangeParser` returns an array of ranges on success, and an error code
   // (negative number) on fail.
@@ -283,7 +270,10 @@ export const serveRoute = (c: Context) => {
   // get the file to serve
   const file: TorrentFile | undefined = c.get('file-serve')
   // make sure that the file is exists
-  if (!file) throw new HTTPException(404, 'File not found')
+  if (!file)
+    throw new Error(
+      'file-serve is not set, use resolvePathMiddleware or pickFileMiddleware first!',
+    )
 
   // load requested ranges
   const range: { start: number; end: number } | undefined = c.get('range')
