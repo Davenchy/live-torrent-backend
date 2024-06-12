@@ -2,6 +2,7 @@ FROM node:18-slim
 
 LABEL maintainer "Davenchy <firon1222@gmail.com>"
 LABEL description "Live-Torrent-Backend server image"
+MAINTAINER Davenchy <firon1222@gmail.com>
 
 WORKDIR /app
 
