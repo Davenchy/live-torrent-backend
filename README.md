@@ -24,7 +24,9 @@ For more details check the [documentation](#documentation).
 
 - Serve, download, visit torrent file content.
 
-> Coming soon: Download subtitles using OpenSubtitles API.
+- Search OpenSubtitles subtitles **BETA**.
+
+> Coming soon: Download subtitles.
 
 ## Docker
 
@@ -55,3 +57,15 @@ npm install
 
 npm start
 ```
+
+## Environment Variables
+
+Set the following environment variables, also you could user the `.env` file:
+
+| Variable Name | Is Required | Default Value | Description |
+|:-:|:-:|:-:|:- |
+| PORT | NO | 3000 | The port to listen on. |
+| OS_APIKEY | For OpenSubtitles API. | - | OpenSubtitles API key. |
+| OS_USERAGENT | For OpenSubtitles API. | - | OpenSubtitles User Agent. |
+
+For more information about OpenSubtitles API check documentation on [OpenSubtitles API](https://opensubtitles.stoplight.io/docs/opensubtitles-api).
