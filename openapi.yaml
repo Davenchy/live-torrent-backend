@@ -314,6 +314,7 @@ components:
         - $ref: '#/components/examples/TorrentFile'
     TorrentResult:
       type: object
+      description: A torrent provider search result.
       required: [title, size, magnet, provider]
       properties:
         title:
@@ -345,6 +346,7 @@ components:
           description: The link of the torrent on the provider site
     Error:
       type: object
+      description: The general error form.
       required: [status, statusCode, message]
       properties:
         code:
@@ -371,7 +373,7 @@ paths:
     get:
       summary: Get all supported providers.
       description: |
-        Get a list with all supported providers
+        Get a list with all supported providers and the categories for each.
       tags: [Search]
       responses:
         200:
@@ -390,7 +392,7 @@ paths:
   /search/{provider}:
     get:
       summary: Get providers list
-      description: Get torrent provider names and supported categories for each.
+      description: Use torrent provider to search for torrent files.
       tags: [Search]
       parameters:
         - in: path
@@ -419,7 +421,10 @@ paths:
               value: ThePirateBay
         - in: query
           name: q
-          description: The search query
+          description: |
+            The search query.
+
+            Use the endpoint `/search` to get a list of providers and the supported categories for each
           required: true
           schema:
             type: string
@@ -428,9 +433,9 @@ paths:
         - in: query
           name: c
           description: |
-            The search query.
-            
-            Use the endpoint `/search` to get a list of providers and the supported categories for each
+            The category to filter on.
+
+            Use the endpoint `/search` to get a list of the supported categories for each provider.
           schema:
             type: string
           example:
