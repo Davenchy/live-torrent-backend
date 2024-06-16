@@ -388,6 +388,9 @@ components:
     Subtitle:
       type: object
       required: [id, type, language, downloads, trusted, ai_translated, machine_translated, url, details]
+      externalDocs:
+        description: OpenSubtitles API
+        url: "https://opensubtitles.stoplight.io/docs/opensubtitles-api"
       properties:
         id:
           type: string
@@ -474,6 +477,9 @@ components:
       type: object
       description: Search subtitle result object
       required: [pages, page, limit, count]
+      externalDocs:
+        description: OpenSubtitles API
+        url: "https://opensubtitles.stoplight.io/docs/opensubtitles-api"
       properties:
         pages:
           type: number
