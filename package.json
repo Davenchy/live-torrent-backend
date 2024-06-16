@@ -1,6 +1,6 @@
 {
   "name": "live-torrent-backend",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "the backend server for the live-torrent project",
   "main": "./src/index.ts",
   "type": "module",
