@@ -28,7 +28,7 @@ For more details check the [documentation](#documentation).
 
 ## Docker
 
-To use the Docker image, run:
+To use the Docker [image](https://hub.docker.com/repository/docker/davenchy/live-torrent-backend), run:
 
 ```sh
 docker run -d -p 3000:3000 -v $(pwd)/downloads:/app/downloads davenchy/live-torrent-backend:latest
