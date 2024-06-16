@@ -128,15 +128,15 @@ components:
       schema:
         type: string
       examples:
+        Nothing:
+          summary: Pick nothing
+          value: ''
         Videos:
           summary: "Pick all .mp4 video files"
           value: '*.mp4'
         Subtitles:
           summary: "Pick all .srt subtitle files"
           value: '*.srt'
-        Empty:
-          summary: Pick nothing
-          value: ''
     PickFileIndex:
       name: i
       in: query
@@ -146,6 +146,9 @@ components:
         items:
           type: number
       examples:
+        Nothing:
+          summary: "Pick nothing"
+          value: ''
         ManyFiles:
           summary: "Pick indexes 0, 1, 2, and 3"
           value: 0,1,2,3
@@ -493,7 +496,7 @@ paths:
     get:
       tags: [Torrent]
       summary: Serve file
-      description: You could use **q** or **i** to only select one file.
+      description: Use **q** or **i** to select select a single file, if many files were selected the first one will be selected.
       parameters:
         - $ref: '#/components/parameters/TorrentId'
         - $ref: '#/components/parameters/PickFileQuery'
@@ -508,7 +511,7 @@ paths:
     head:
       tags: [Torrent]
       summary: Check headers before download
-      description: You could use **q** or **i** to only select one file.
+      description: Use **q** or **i** to select select a single file, if many files were selected the first one will be selected.
       parameters:
         - $ref: '#/components/parameters/TorrentId'
         - $ref: '#/components/parameters/PickFileQuery'
@@ -523,7 +526,7 @@ paths:
   /torrent/serve/{hash}:
     get:
       summary: Serve file using infoHash
-      description: You could use **q** or **i** to only select one file.
+      description: Use **q** or **i** to select select a single file, if many files were selected the first one will be selected.
       tags: [Torrent]
       parameters:
         - $ref: '#/components/parameters/TorrentInfoHash'
@@ -538,7 +541,7 @@ paths:
           $ref: '#/components/responses/FileServeNotFoundError'
     head:
       summary: Check headers before download
-      description: You could use **q** or **i** to only select one file.
+      description: Use **q** or **i** to select select a single file, if many files were selected the first one will be selected.
       tags: [Torrent]
       parameters:
         - $ref: '#/components/parameters/TorrentInfoHash'
