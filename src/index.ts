@@ -2,11 +2,14 @@ import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { swaggerUI } from '@hono/swagger-ui'
 import { HTTPExceptionErrorHandler } from 'src/utils/errors'
+import dotenv from 'dotenv'
 import YAML from 'yamljs'
 
 import routes from 'routes/index'
 
 const app = new Hono()
+
+dotenv.config()
 
 app.route('/', routes)
 app.get('/', c => c.redirect('/docs'))
