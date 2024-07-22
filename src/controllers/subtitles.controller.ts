@@ -18,7 +18,7 @@ const parseNum = (
     if (!parsed || parsed <= 0) throw new Error()
     return parsed
   } catch (e) {
-    throw InvalidSearchError(`invalid ${label} value: '${value}'`)
+    throw InvalidSearchError(label, value)
   }
 }
 

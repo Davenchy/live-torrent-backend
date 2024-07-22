@@ -79,3 +79,14 @@ export const UnsupportedProviderError = (
   error: Error | undefined = undefined,
 ): HTTPException =>
   new HTTPException(`Unsupported ${provider} provider`, 400, { code: 5, error })
+
+export const InvalidSearchError = <T>(
+  label: string,
+  value: T,
+  error: Error | undefined = undefined,
+): HTTPException =>
+  new HTTPException(
+    `invalid search parameter '${label}' value: '${value}'`,
+    400,
+    { code: 6, error },
+  )
